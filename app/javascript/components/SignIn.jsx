@@ -1,37 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const NewBlogPost = () => {
+const LogIn = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [IsLoggedIn, setIsLoggedIn] = useState("");
   
 
-  const stripHtmlEntities = (str) => {
-    return String(str)
-      .replace(/\n/g, "<br> <br>")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  };
-  
+
+
   const onChange = (event, setFunction) => {
     setFunction(event.target.value);
   };
 
   const onSubmit = (event) => {
     event.preventDefault();
-    const url = "/api/v1/blog_post/create";
+    const url = "/api/v1/forum_thread/create";
 
-    if (title.length == 0 || body.length == 0)
-      return;
+    if (title.length == 0 || body.length == 0) return;
 
- 
-
-    const blogPostContent = {
+    const forumThreadContent = {
       title,
       body: stripHtmlEntities(body),
     };
-    console.log(blogPostContent,"lop");
+    console.log(forumThreadContent, "lop");
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -40,7 +31,7 @@ const NewBlogPost = () => {
         "X-CSRF-Token": token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(blogPostContent),
+      body: JSON.stringify(forumThreadContent),
     })
       .then((response) => {
         if (response.ok) {
@@ -48,7 +39,7 @@ const NewBlogPost = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => navigate(`/blogPost/${response.id}`))
+      .then((response) => navigate(`/forum_thread/${response.id}`))
       .catch((error) => console.log(error.message));
   };
 
@@ -71,7 +62,7 @@ const NewBlogPost = () => {
                 onChange={(event) => onChange(event, setTitle)}
               />
             </div>
-            
+
             <label htmlFor="body">Preparation Instructions</label>
             <textarea
               className="form-control"
@@ -84,7 +75,7 @@ const NewBlogPost = () => {
             <button type="submit" className="btn custom-button mt-3">
               Create Recipe
             </button>
-            <Link to="/blogPosts" className="btn btn-link mt-3">
+            <Link to="/forumThreads" className="btn btn-link mt-3">
               Back to recipes
             </Link>
           </form>
@@ -94,4 +85,5 @@ const NewBlogPost = () => {
   );
 };
 
-export default NewBlogPost;
+export default NewForumThread;
+

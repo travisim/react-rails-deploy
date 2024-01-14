@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_11_200124) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_13_235248) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,16 +21,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_11_200124) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "password_digest"
-    t.string "first_name", null: false
-    t.string "last_name", null: false
-    t.string "username", null: false
-    t.date "birthday", null: false
-    t.string "image", default: "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+  create_table "forum_thread_comments", force: :cascade do |t|
+    t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "forum_threads", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "body", null: false
+    t.string "category", null: false
+    t.string "author", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_forum_threads_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "forum_threads", "users"
 end

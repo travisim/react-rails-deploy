@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "../components/Home";
-import BlogPosts from "../components/BlogPosts";
-import BlogPost from "../components/BlogPost";
-import NewBlogPost from "../components/NewBlogPost";
+import ForumThreads from "../components/ForumThreads";
+import ForumThread from "../components/ForumThread";
+import NewForumThread from "../components/NewForumThread";
 
 export default (
   <Router>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/blogPosts" element={<BlogPosts />} />
-      <Route path="/blogPost/:id" element={<BlogPost />} />
-      <Route path="/blogPost" element={<NewBlogPost />} />
+      <Route path="/forumThreads" element={<ForumThreads />} />
+      <Route path="/forumThread/:id" element={<ForumThread />} />
+      <Route path="/newForumThread" element={<NewForumThread />} />
     </Routes>
   </Router>
 );

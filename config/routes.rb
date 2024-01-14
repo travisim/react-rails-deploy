@@ -1,10 +1,15 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      get 'blog_post/index'
-      post 'blog_post/create'
-      get '/show/:id', to: 'blog_post#show'
-      delete '/destroy/:id', to: 'blog_post#destroy'
+      get 'users/index'
+      post 'users/create'
+      get 'users/show/:id', to: 'users#show'
+      delete 'users/destroy/:id', to: 'users#destroy'
+
+      get 'forum_thread/index'
+      post 'forum_thread/create'
+      get '/show/:id', to: 'forum_thread#show'
+      delete '/destroy/:id', to: 'forum_thread#destroy'
     end
   end
   root 'homepage#index'
