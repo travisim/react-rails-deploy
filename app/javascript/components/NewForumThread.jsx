@@ -27,7 +27,7 @@ const NewForumThread = () => {
       title,
       body: stripHtmlEntities(body),
     };
-    console.log(forumThreadContent, "lop");
+    
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {

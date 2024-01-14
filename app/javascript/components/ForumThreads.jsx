@@ -43,7 +43,7 @@ const ForumThreads = () => {
         /> */}
         <div className="card-body">
           <h5 className="card-title">{forumThread.title}</h5>
-          <h5 className="card-title">{users.find(user => {return user.id === forumThread.user_id}).name}</h5>
+          <h5 className="card-title">{users.find(user => {return user.id === forumThread.user_id}).username}</h5>
 
           <Link
             to={`/forumThread/${forumThread.id}`}
@@ -80,6 +80,9 @@ const ForumThreads = () => {
           <div className="text-end mb-3">
             <Link to="/newForumThread" className="btn custom-button">
               Create New Thread
+            </Link>
+            <Link to="/signIn" className="btn custom-button">
+              Sign In
             </Link>
           </div>
           <div className="row">

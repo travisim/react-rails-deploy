@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const LogIn = () => {
+const SignIn = () => {
   const navigate = useNavigate();
-  const [IsLoggedIn, setIsLoggedIn] = useState("");
-  
+  const [username, setUsername] = useState("");
 
 
 
@@ -14,15 +13,15 @@ const LogIn = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    const url = "/api/v1/forum_thread/create";
+    const url = "/api/v1/users/create";
 
-    if (title.length == 0 || body.length == 0) return;
+    if (username.length == 0 ) return;
 
-    const forumThreadContent = {
-      title,
-      body: stripHtmlEntities(body),
+    const signInContent = {
+      username,
+      
     };
-    console.log(forumThreadContent, "lop");
+    
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -31,7 +30,7 @@ const LogIn = () => {
         "X-CSRF-Token": token,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(forumThreadContent),
+      body: JSON.stringify(signInContent),
     })
       .then((response) => {
         if (response.ok) {
@@ -39,7 +38,7 @@ const LogIn = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => navigate(`/forum_thread/${response.id}`))
+      .then((response) => navigate(`/forumThreads`))
       .catch((error) => console.log(error.message));
   };
 
@@ -48,32 +47,24 @@ const LogIn = () => {
       <div className="row">
         <div className="col-sm-12 col-lg-6 offset-lg-3">
           <h1 className="font-weight-normal mb-5">
-            Add a new recipe to our awesome recipe collection.
+            Sign In
           </h1>
           <form onSubmit={onSubmit}>
             <div className="form-group">
-              <label htmlFor="title">Recipe name</label>
+              <label htmlFor="name">Username</label>
               <input
                 type="text"
                 name="name"
-                id="title"
+                id="name"
                 className="form-control"
                 required
-                onChange={(event) => onChange(event, setTitle)}
+                onChange={(event) => onChange(event, setUsername)}
               />
             </div>
 
-            <label htmlFor="body">Preparation Instructions</label>
-            <textarea
-              className="form-control"
-              id="body"
-              name="body"
-              rows="5"
-              required
-              onChange={(event) => onChange(event, setBody)}
-            />
+            
             <button type="submit" className="btn custom-button mt-3">
-              Create Recipe
+              Sign In
             </button>
             <Link to="/forumThreads" className="btn btn-link mt-3">
               Back to recipes
@@ -85,5 +76,4 @@ const LogIn = () => {
   );
 };
 
-export default NewForumThread;
-
+export default SignIn;

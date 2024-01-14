@@ -4,6 +4,7 @@ import Home from "../components/Home";
 import ForumThreads from "../components/ForumThreads";
 import ForumThread from "../components/ForumThread";
 import NewForumThread from "../components/NewForumThread";
+import SignIn from "../components/SignIn";
 
 export default (
   <Router>
@@ -12,6 +13,8 @@ export default (
       <Route path="/forumThreads" element={<ForumThreads />} />
       <Route path="/forumThread/:id" element={<ForumThread />} />
       <Route path="/newForumThread" element={<NewForumThread />} />
+      <Route path="/signIn" element={<SignIn />} />
+
     </Routes>
   </Router>
 );
