@@ -10,7 +10,7 @@
 9.times do |i|
   User.create(
     
-   name: "name #{i}",
+   username: "name #{i+2}",
 
   
   )
