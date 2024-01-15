@@ -6,6 +6,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
+    # puts "poiuytyuioiuyhgbhn"
+    # puts params.inspect
     user = User.create!(user_params)
     if user
       render json: user
@@ -26,7 +28,7 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:username)
+    params.permit(:username,:user)
   end
   def set_user
     @user = User.find(params[:id])

@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       delete '/destroy/:id', to: 'forum_thread#destroy'
     end
   end
+  post"/login", to: "users#login"
+  get "/login", to: "users#token_authenticate"
   root 'homepage#index'
   get '/*path' => 'homepage#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

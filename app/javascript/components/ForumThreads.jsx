@@ -31,8 +31,8 @@ const ForumThreads = () => {
       .then((res) => setUser(res))
       .catch(() => navigate("/"));
   }, []);
-  console.log(users, "uuuuuuuuussssserrr");
-  console.log(forumThreads, "forumThreads")
+  // console.log(users, "uuuuuuuuussssserrr");
+  // console.log(forumThreads, "forumThreads")
   const allForumThread = forumThreads.map((forumThread, index) => (
     <div key={index} className="col-md-12 col-lg-12">
       <div className="card mb-4">
@@ -45,7 +45,7 @@ const ForumThreads = () => {
           <h5 className="card-title">{forumThread.title}</h5>
           <h5 className="card-title">{forumThread.category}</h5>
 
-          <h5 className="card-title">{users.find(user => {return user.id === forumThread.user_id}).username}</h5>
+          {/* <h5 className="card-title">{users.find(user => {return user.id === forumThread.user_id}).username}</h5> */}
 
           <Link
             to={`/forumThread/${forumThread.id}`}
