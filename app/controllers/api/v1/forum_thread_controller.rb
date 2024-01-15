@@ -26,7 +26,7 @@ class Api::V1::ForumThreadController < ApplicationController
   private
 
   def forumThread_params
-    params.permit(:title, :body)
+    params.permit(:title, :body,:category)
   end
   def set_forumThread
     @forumThread = ForumThread.find(params[:id])

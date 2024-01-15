@@ -43,6 +43,8 @@ const ForumThreads = () => {
         /> */}
         <div className="card-body">
           <h5 className="card-title">{forumThread.title}</h5>
+          <h5 className="card-title">{forumThread.category}</h5>
+
           <h5 className="card-title">{users.find(user => {return user.id === forumThread.user_id}).username}</h5>
 
           <Link

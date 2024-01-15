@@ -50,6 +50,8 @@ const ForumThread = () => {
         <div className="overlay bg-dark position-absolute" />
         <h1 className="display-4 position-relative text-white">
           {forumThread.title}
+          {forumThread.category}
+
         </h1>
       </div>
       <div className="container py-5">

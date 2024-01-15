@@ -4,7 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 const NewForumThread = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
   const [body, setBody] = useState("");
+
 
   const stripHtmlEntities = (str) => {
     return String(str)
@@ -21,10 +23,11 @@ const NewForumThread = () => {
     event.preventDefault();
     const url = "/api/v1/forum_thread/create";
 
-    if (title.length == 0 || body.length == 0) return;
+    if (title.length == 0 || body.length == 0,category.length == 0) return;
 
     const forumThreadContent = {
       title,
+      category,
       body: stripHtmlEntities(body),
     };
     
@@ -65,6 +68,17 @@ const NewForumThread = () => {
                 className="form-control"
                 required
                 onChange={(event) => onChange(event, setTitle)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="category">category name</label>
+              <input
+                type="text"
+                name="name"
+                id="category"
+                className="form-control"
+                required
+                onChange={(event) => onChange(event, setCategory)}
               />
             </div>
 
