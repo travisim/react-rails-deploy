@@ -43,6 +43,7 @@ const ForumThread = () => {
   };
 
   const forumThreadBody = addHtmlEntities(forumThread.body);
+  
 
   return (
     <div className="">

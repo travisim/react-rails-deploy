@@ -7,7 +7,7 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [token, setToken] = useState("");
   const { user, setUser } = useContext(UserContext);
-  const [isUserCreated,setIsUserCreated] = useState("");
+  
   
   
   // console.log("sds",typeof(user),typeof(setUser), "user") 
