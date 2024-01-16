@@ -14,16 +14,34 @@ import ResponsiveAppBar from "./ResponsiveAppBar";
 
 
 export const UserContext = createContext();
+export const TokenContext = createContext();
+
 // export default props => <div>{Routes}</div>;
 // export const UserContext = React.createContext(null)
 const App = () => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  
 
-    // console.log(user, "user","app")
+  console.log("localStorage.token", localStorage.token)
+    useEffect(() => {
+        if (localStorage.getItem("token")) { 
+          fetch('/login', {
+            headers: { "Authenticate": localStorage.token }
+          })
+          .then(response => response.json())
+          .then(user => {
+              setUser(user)
+            })
+          }
+      }, []);
+
+    console.log(user, "user","app")
   return (
     <div>
         <Router>
         <UserContext.Provider value={{ user: user, setUser: setUser }}>
+        <TokenContext.Provider value={{ token: token, setToken: setToken }}>
           <ResponsiveAppBar />
           
         <Routes>
@@ -34,8 +52,10 @@ const App = () => {
             <Route path="/signIn" element={<SignIn />} />
           <Route path="/signUp" element={<SignUp />} />
           
-          </Routes>
-          </UserContext.Provider>
+            </Routes>
+        </TokenContext.Provider >
+            
+        </UserContext.Provider>
         </Router>
           
           

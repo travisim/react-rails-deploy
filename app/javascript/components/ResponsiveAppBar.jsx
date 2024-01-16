@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import{UserContext} from './App';
 
 
+
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -22,8 +23,17 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const {user,setUser} = React.useContext(UserContext);
+console.log("navbaruser",user,user ===null)
 
-
+  function currentUser() {
+    if (user === null){
+      return "not logged in"
+    }
+    else {
+      return "logged in as ${user.username}"
+    }
+  }
+  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -96,6 +106,8 @@ function ResponsiveAppBar() {
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+              
+            
             </Menu>
           </Box>
           {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}

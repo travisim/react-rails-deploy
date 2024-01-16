@@ -6,7 +6,9 @@ const ForumThreads = () => {
   const navigate = useNavigate();
 
   const [forumThreads, setForumThreads] = useState([]);
-  const { user, setUser } = useContext(UserContext);
+  const [allUsers, setAllUsers] = useState([]);
+
+  // const { user, setAllUsers } = useContext(UserContext);
 
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const ForumThreads = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((res) => setUser(res))
+      .then((res) => setAllUsers(res))
       .catch(() => navigate("/"));
   }, []);
   // console.log(users, "uuuuuuuuussssserrr");

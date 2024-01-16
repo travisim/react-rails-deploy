@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useContext,createContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
+import { TokenContext } from "./App";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
-  const [token, setToken] = useState("");
-  const { user, setUser } = useContext(UserContext);
+  // const [token, setToken] = useState("");
+  const { user, setToken } = useContext(TokenContext);
+  const { token, setUser } = useContext(UserContext);
+
   const [isUserCreated,setIsUserCreated] = useState("");
   
   
@@ -14,18 +17,7 @@ const SignIn = () => {
   // console.log("user",user)
  
   
-  // useEffect(() => {
-  //   if (token) { 
-  //     fetch('/login', {
-  //       headers: { "Authenticate": token }
-  //     })
-  //     .then(response => response.json())
-  //     .then(user => {
-  //         setUser(user)
-  //       })
-  //     }
-  // }, []);
-  // console.log("user", user)
+  // r)
   const onChange = (event, setFunction) => {
     setFunction(event.target.value);
   };
@@ -60,12 +52,15 @@ const SignIn = () => {
       body: JSON.stringify(signInContent),
     })
     .then(response => response.json())
-    .then((data) => {
+      .then((data) => {
+        if (data.error){
+        alert("user does not exists")
+      }
       console.log(data,"  data")
-      setToken(data.token);
+      localStorage.setItem("token", data.token)
       setUser(data.user);
-      console.log(token, "token")
-      console.log(user, "user")
+      console.log(data.token, "token")
+      console.log(data.user, "user")
     })
 
   };
