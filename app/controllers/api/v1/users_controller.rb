@@ -8,6 +8,10 @@ class Api::V1::UsersController < ApplicationController
   def create
     # puts "poiuytyuioiuyhgbhn"
     # puts params.inspect
+    # testUser = User.save(user_params)
+    # if testUser.errors[:username] == '["has already been taken"]'
+    #   render json: { error: 'Username already taken' }
+    # else
     user = User.create!(user_params)
     if user
       render json: user
@@ -15,6 +19,8 @@ class Api::V1::UsersController < ApplicationController
       render json: user.errors
     end
   end
+
+  
 
   def show
     render json: @user

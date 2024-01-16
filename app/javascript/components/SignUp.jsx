@@ -51,22 +51,40 @@ const SignIn = () => {
     
     console.log(signInContent, "signInContent");
     
-    
-    fetch('/login', {
-      method: 'POST',
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    fetch(url, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(signInContent),
     })
-    .then(response => response.json())
-    .then((data) => {
-      console.log(data,"  data")
-      setToken(data.token);
-      setUser(data.user);
-      console.log(token, "token")
-      console.log(user, "user")
+      .then((response) => {
+      console.log(response, "response1")
+        if (response.ok) {
+          // isUserCreated = true;
+          // alert("User Created")
+          // isUserCreated = true;
+        return response.json();
+        }
+        else {
+          alert("Username already exists")
+          // isUserCreated = false;
+
+        }
+        throw new Error("Network response was not ok.");
+      
     })
+      .then((response) => {
+        // setTimeout(() => {
+        //   navigate(`/forumThreads`)
+        // },5000)
+        // navigate(`/forumThreads`)
+      })
+    .catch((error) => console.log(error.message));
+    
+    
 
   };
     return (
@@ -75,7 +93,7 @@ const SignIn = () => {
           <div className="col-sm-12 col-lg-6 offset-lg-3">
         
           <h1 className="font-weight-normal mb-5">
-            Sign In
+            Sign Up
           </h1>
           <form onSubmit={onSubmit}>
             <div className="form-group">
@@ -92,7 +110,7 @@ const SignIn = () => {
 
             
             <button type="submit" className="btn custom-button mt-3">
-              Sign In
+              Sign Up
             </button>
             <Link to="/forumThreads" className="btn btn-link mt-3">
               Back to recipes

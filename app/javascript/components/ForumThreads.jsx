@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from './App';
 
 const ForumThreads = () => {
   const navigate = useNavigate();
 
   const [forumThreads, setForumThreads] = useState([]);
-  const [users, setUser] = useState([]);
+  const { user, setUser } = useContext(UserContext);
+
 
   useEffect(() => {
     const url = "/api/v1/forum_thread/index";
@@ -85,6 +87,9 @@ const ForumThreads = () => {
             </Link>
             <Link to="/signIn" className="btn custom-button">
               Sign In
+            </Link>
+            <Link to="/signUp" className="btn custom-button">
+              Sign Up
             </Link>
           </div>
           <div className="row">
