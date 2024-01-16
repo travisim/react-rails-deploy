@@ -7,7 +7,10 @@ import NewForumThread from "../components/NewForumThread";
 import SignIn from "../components/SignIn";
 
 export default (
+  
+  
   <Router>
+    {/* <UserContext.Provider value={{ user: user, setUser: setUser }}></UserContext.Provider> */}
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/forumThreads" element={<ForumThreads />} />

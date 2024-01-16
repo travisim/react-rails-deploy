@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
@@ -6,7 +6,21 @@ const SignIn = () => {
   const [username, setUsername] = useState("");
   const [token, setToken] = useState("");
   const [user, setUser] = useState([]);
-
+  console.log("referesh")
+ 
+  
+  useEffect(() => {
+    if (token) { 
+      fetch('/login', {
+        headers: { "Authenticate": token }
+      })
+      .then(response => response.json())
+      .then(user => {
+          setUser(user)
+        })
+      }
+  }, []);
+  console.log("user", user)
   const onChange = (event, setFunction) => {
     setFunction(event.target.value);
   };
@@ -20,43 +34,45 @@ const SignIn = () => {
     const signInContent = {
       username
     };
-    // // console.log(token, "token")
-    // fetch('/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(signInContent),
-    // })
-    //   .then(response => response.json())
-    //   .then((data) => {
+    // console.log(token, "token")
+    fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(signInContent),
+    })
+      .then(response => response.json())
+      .then((data) => {
        
-    // setToken(data.token);
-    //     setUser(data.user);
-    //   })
+      setToken(data.token);
+      setUser(data.user);
+      })
+    
+    
 
-    // // console.log(token, "token")
+    // console.log(token, "token")
 
     console.log(signInContent, "signInContent");
     
     const token = document.querySelector('meta[name="csrf-token"]').content;
-  //   fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "X-CSRF-Token": token,
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(signInContent),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         return response.json();
-  //       }
-  //       throw new Error("Network response was not ok.");
-  //     })
-  //     .then((response) => navigate(`/forumThreads`))
-  //     .catch((error) => console.log(error.message));
-  // };
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(signInContent),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      // .then((response) => navigate(`/forumThreads`))
+      .catch((error) => console.log(error.message));
+  };
 
   return (
     <div className="container mt-5">
