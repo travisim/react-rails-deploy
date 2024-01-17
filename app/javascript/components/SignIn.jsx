@@ -60,7 +60,8 @@ const SignIn = () => {
       localStorage.setItem("token", data.token)
       setUser(data.user);
       console.log(data.token, "token")
-      console.log(data.user, "user")
+        console.log(data.user, "user")
+        navigate(`/forumThreads`)
     })
 
   };

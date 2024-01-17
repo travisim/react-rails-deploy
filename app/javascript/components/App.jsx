@@ -11,6 +11,8 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
 import ResponsiveAppBar from "./ResponsiveAppBar";
+   
+ 
 
 
 export const UserContext = createContext();
@@ -35,6 +37,13 @@ const App = () => {
             })
           }
       }, []);
+
+      function handleLogout(){
+        setUser(null)
+        localStorage.removeItem("token")
+        navigate(`/forumThreads`)
+        console.log("logged out")
+      }
 
     console.log(user, "user","app")
   return (

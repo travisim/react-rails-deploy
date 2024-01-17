@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext,createContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 
-const SignIn = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [token, setToken] = useState("");
@@ -80,7 +80,7 @@ const SignIn = () => {
         // setTimeout(() => {
         //   navigate(`/forumThreads`)
         // },5000)
-        // navigate(`/forumThreads`)
+        navigate(`/forumThreads`)
       })
     .catch((error) => console.log(error.message));
     
@@ -122,4 +122,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

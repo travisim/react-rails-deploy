@@ -12,12 +12,17 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 // import AdbIcon from '@mui/icons-material/Adb';
-import { UserContext } from "./App";
+import { UserContext,handleLogout } from "./App";
+// import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const pages = ["Products"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
+  const navigate = useNavigate();
+
   const { user, setUser } = React.useContext(UserContext);
   function displayLoginStatus() {
     if (user === null) {
@@ -25,6 +30,35 @@ function ResponsiveAppBar() {
     } else {
       return `logged in as "${user.username}";`;
     }
+  }
+
+  function handleLogout(){
+    setUser(null)
+    localStorage.removeItem("token")
+    navigate(`/forumThreads`)
+    console.log("logged out")
+  }
+
+  function displaySignInOutbuttons() {
+    if (user === null) {
+      return (<div>
+        <MenuItem component={Link} to="/signIn">
+          <Typography textAlign="center">Sign In</Typography>
+        </MenuItem>
+        <MenuItem component={Link} to="/signUp">
+          <Typography textAlign="center">Sign up</Typography>
+        </MenuItem></div>
+      );
+    }
+    else {
+     
+      return (
+        <MenuItem onClick={handleLogout } >
+      <Typography textAlign="center">Logout</Typography>
+      </MenuItem>
+      );
+    }
+    
   }
   //   console.log(displayLoginStatus());
 
@@ -105,6 +139,7 @@ function ResponsiveAppBar() {
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
+                  
                 </MenuItem>
               ))}
             </Menu>
@@ -129,15 +164,11 @@ function ResponsiveAppBar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+          {displaySignInOutbuttons()}
+           
+          
+      
+          
           </Box>
           <Box>
             <Button
