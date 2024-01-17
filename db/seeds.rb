@@ -10,7 +10,7 @@
 9.times do |i|
   User.create(
     
-   username: "name #{i+2}",
+   username: "name #{i+1}",
 
   
   )
@@ -23,4 +23,13 @@ end
     # author: "author #{i + 1}",
     user_id: 1
     )
+end
+9.times do |i|
+  ForumThreadComments.create(
+    
+    body: "#{i}why,help",
+  
+forum_thread_id: 1,
+  user_id: 1
+  )
 end

@@ -8,8 +8,13 @@ Rails.application.routes.draw do
 
       get 'forum_thread/index'
       post 'forum_thread/create'
-      get '/show/:id', to: 'forum_thread#show'
-      delete '/destroy/:id', to: 'forum_thread#destroy'
+      get 'forum_thread/show/:id', to: 'forum_thread#show'
+      delete 'forum_thread/destroy/:id', to: 'forum_thread#destroy'
+
+      get 'forum_thread_comments/index'
+      post 'forum_thread_comments/create'
+      get 'forum_thread_comments/show/:id', to: 'forum_thread_comments#show'
+      delete 'forum_thread_comments/destroy/:id', to: 'forum_thread_comments#destroy'
     end
   end 
   post"/login", to: "users#login"

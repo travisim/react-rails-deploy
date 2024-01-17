@@ -88,14 +88,15 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <MenuItem component={Link} to="/">
+        <MenuItem >
 
           {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
-          <Typography
+            <Typography
+              // component={Link} to="/forumThreads"
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/forumThreads"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -150,7 +151,7 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
           {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
-          <MenuItem component={Link} to="/">
+          <MenuItem>
          
           <Typography 
             variant="h5"

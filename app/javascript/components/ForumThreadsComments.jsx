@@ -2,17 +2,17 @@ import React, { useState, useEffect,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from './App';
 
-const ForumThreads = () => {
+const ForumThreadComments = (currentForumThread) => {
   const navigate = useNavigate();
 
-  const [forumThreads, setForumThreads] = useState([]);
+  const [forumThreadComments, setForumThreadComments] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
 
   // const { user, setAllUsers } = useContext(UserContext);
 
 
   useEffect(() => {
-    const url = "/api/v1/forum_thread/index";
+    const url = "/api/v1/forum_thread_comments/index";
     fetch(url)
       .then((res) => {
         if (res.ok) {
@@ -20,8 +20,8 @@ const ForumThreads = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((res) => setForumThreads(res))
-      .catch(() => navigate("/"));
+      .then((res) => setForumThreadComments(res))
+      .catch(/*() => navigate("/")*/);
   }, []);
   useEffect(() => {
     const url = "/api/v1/users/index";
@@ -36,8 +36,8 @@ const ForumThreads = () => {
       .catch(() => navigate("/"));
   }, []);
   // console.log(users, "uuuuuuuuussssserrr");
-  // console.log(forumThreads, "forumThreads")
-  const allForumThread = forumThreads.map((forumThread, index) => (
+  // console.log(forumThreadComments, "forumThreadComments")
+  const allForumThread = forumThreadComments.filter((x)=>x.user_id===).map((forumThread, index) => (
     <div key={index} className="col-md-12 col-lg-12">
       <div className="card mb-4">
         {/* <img
@@ -90,7 +90,7 @@ const ForumThreads = () => {
 
           </div>
           <div className="row">
-            {forumThreads.length > 0 ? allForumThread : noForumThread}
+            {forumThreadComments.length > 0 ? allForumThread : noForumThread}
           </div>
           <Link to="/" className="btn btn-link">
             Home
@@ -101,4 +101,4 @@ const ForumThreads = () => {
   );
 };
 
-export default ForumThreads;
+export default ForumThreadComments;
