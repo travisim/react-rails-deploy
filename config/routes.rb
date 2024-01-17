@@ -11,7 +11,7 @@ Rails.application.routes.draw do
       get '/show/:id', to: 'forum_thread#show'
       delete '/destroy/:id', to: 'forum_thread#destroy'
     end
-  end
+  end 
   post"/login", to: "users#login"
   get "/login", to: "users#token_authenticate"
   root 'homepage#index'

@@ -1,17 +1,13 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from './App';
+import { UserContext } from "./App";
 
 const NewForumThread = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Question");
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
-
-  
-
-
 
   const stripHtmlEntities = (str) => {
     return String(str)
@@ -27,16 +23,15 @@ const NewForumThread = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const url = "/api/v1/forum_thread/create";
-
-    if (title.length == 0 || body.length == 0,category.length == 0) return;
+    console.log(title, category, body);
+    if ((title.length == 0 || body.length == 0, category.length == 0)) return;
 
     const forumThreadContent = {
       title,
       category,
       body: stripHtmlEntities(body),
-      user_id: user.id
+      user_id: user.id,
     };
-    
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -53,7 +48,7 @@ const NewForumThread = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => navigate(`/forum_thread/${response.id}`))
+      .then((response) => navigate(`/forumThread/${response.id}`))
       .catch((error) => console.log(error.message));
   };
 
@@ -77,33 +72,24 @@ const NewForumThread = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="category">category name</label>
-              {/* <input
-                type="text"
-                name="name"
-                id="category"
-                className="form-control"
-                required
-                onChange={(event) => onChange(event, setCategory)}
-              /> */}
-            <select
-              type="text"
-              name="name"
-              id="category"
-              className="form-control"
-              required
-              onChange={(event) => onChange(event, setCategory)}
-              >
-              
-              <option value="Question">Question</option>
-              <option value="Discussion">Discussion</option>
-              <option value="Off-Advice">Off-Advice</option>
-              <option value="Other">Other</option>
-
-            </select>
+              <label htmlFor="category">
+                category name
+                <select
+                  type="text"
+                  name="name"
+                  id="category"
+                  className="form-control"
+                  required
+                  onChange={(event) => onChange(event, setCategory)}
+                  defaultValue="Question"
+                >
+                  <option value="Question">Question</option>
+                  <option value="Discussion">Discussion</option>
+                  <option value="Off-Advice">Off-Advice</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
             </div>
-  
-
 
             <label htmlFor="body">Preparation Instructions</label>
             <textarea

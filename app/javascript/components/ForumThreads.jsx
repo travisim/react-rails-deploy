@@ -87,12 +87,7 @@ const ForumThreads = () => {
             <Link to="/newForumThread" className="btn custom-button">
               Create New Thread
             </Link>
-            <Link to="/signIn" className="btn custom-button">
-              Sign In
-            </Link>
-            <Link to="/signUp" className="btn custom-button">
-              Sign Up
-            </Link>
+
           </div>
           <div className="row">
             {forumThreads.length > 0 ? allForumThread : noForumThread}
