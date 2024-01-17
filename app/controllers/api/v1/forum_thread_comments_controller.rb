@@ -26,7 +26,7 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
     private
   
     def forumThreadComment_params
-      params.require(:forum_thread_comments).permit( :body,:forum_thread_id, :user_id)
+      params.require(:forum_thread_comment).permit( :body,:forum_thread_id, :user_id)
     end
     def set_forumThreadComment
       @forumThreadComment = ForumThreadComment.find(params[:id])

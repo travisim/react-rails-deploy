@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
+import { UserContext } from "./App";
+
 
 const ForumThread = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [forumThread, setForumThread] = useState({ title: "" });
   const [allUsers, setAllUsers] = useState([]);
+  const [body, setBody] = useState("");
+  const { user, setUser } = useContext(UserContext);
+
+
 
   const [forumThreadComments, setForumThreadComments] = useState([]);
 
@@ -115,6 +121,50 @@ const ForumThread = () => {
       </h4>
     </div>
   );
+  const stripHtmlEntities = (str) => {
+    return String(str)
+      .replace(/\n/g, "<br> <br>")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  };
+
+  const onChange = (event, setFunction) => {
+    setFunction(event.target.value);
+  };
+
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    const url = "/api/v1/forum_thread_comments/create";
+    console.log("body",body);
+    if ( body.length == 0) return;
+
+    const forumThreadCommentContent = {
+   
+      body: stripHtmlEntities(body),
+      user_id: user.id,
+      forum_thread_id: params.id
+  
+    };
+
+    const token = document.querySelector('meta[name="csrf-token"]').content;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(forumThreadCommentContent),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then()
+      .catch((error) => console.log(error.message));
+  };
 
   return (
     <div className="">
@@ -138,15 +188,35 @@ const ForumThread = () => {
               }}
             />
           </div>
-          <i className="bi bi-chat"></i>
-          <TextField
-            style={{ textAlign: "left" }}
-            hinttext="Message Field"
-            floatinglabeltext="MultiLine and FloatingLabel"
-            multiline
-            rows={2}
-          />
+
+          {/* <img
+          src={forumThread.image}
+          className="card-img-top"
+          alt={`${recipe.title} image`}
+        /> */}
+
           <div className="row">
+            <div className=" col-md-12 col-lg-12">
+              <form onSubmit={onSubmit} >
+                <div className="form-group">
+                  <TextField
+                    style={{ textAlign: "left" }}
+                    hinttext="Message Field"
+                    floatinglabeltext="MultiLine and FloatingLabel"
+                    multiline
+                    rows={5}
+                    className="card form-control"
+                    onChange={(event) => onChange(event, setBody)}
+                  />
+                </div>
+                  <button type="submit" className="btn btn-primary mb-2 custom-button ">
+                  Post
+                </button>
+
+                
+              </form>
+              {/* <h5 className="card-title">{forumThreadComments.body}</h5> */}
+            </div>
             {forumThreadComments.length > 0
               ? allForumThreadComments
               : noForumThreadComments}
