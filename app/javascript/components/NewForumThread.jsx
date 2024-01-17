@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from './App';
 
 const NewForumThread = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [body, setBody] = useState("");
+  const { user, setUser } = useContext(UserContext);
+
+  
+
 
 
   const stripHtmlEntities = (str) => {
@@ -29,6 +34,7 @@ const NewForumThread = () => {
       title,
       category,
       body: stripHtmlEntities(body),
+      user_id: user.id
     };
     
 
@@ -72,15 +78,32 @@ const NewForumThread = () => {
             </div>
             <div className="form-group">
               <label htmlFor="category">category name</label>
-              <input
+              {/* <input
                 type="text"
                 name="name"
                 id="category"
                 className="form-control"
                 required
                 onChange={(event) => onChange(event, setCategory)}
-              />
+              /> */}
+            <select
+              type="text"
+              name="name"
+              id="category"
+              className="form-control"
+              required
+              onChange={(event) => onChange(event, setCategory)}
+              >
+              
+              <option value="Question">Question</option>
+              <option value="Discussion">Discussion</option>
+              <option value="Off-Advice">Off-Advice</option>
+              <option value="Other">Other</option>
+
+            </select>
             </div>
+  
+
 
             <label htmlFor="body">Preparation Instructions</label>
             <textarea
