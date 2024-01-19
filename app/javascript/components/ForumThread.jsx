@@ -29,8 +29,9 @@ const ForumThread = () => {
       .catch(() => navigate("/forumThreads"));
   }, [params.id]);
 
+  const token = document.querySelector('meta[name="csrf-token"]').content;
   useEffect(() => {
-    const url = "/api/v1/forum_thread_comments/index";
+    const url = `/api/v1/forum_thread_comments/showCommentsForThread/${params.id}`;
     fetch(url)
       .then((res) => {
         if (res.ok) {
@@ -42,6 +43,7 @@ const ForumThread = () => {
       .then((res) => setForumThreadComments(res))
       .catch(/*() => navigate("/")*/);
   }, []);
+  console.log(forumThreadComments, "forumThreadComments2");
   useEffect(() => {
     const url = "/api/v1/users/index";
     fetch(url)
@@ -136,18 +138,18 @@ const ForumThread = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const url = "/api/v1/forum_thread_comments/create";
-    console.log("body",body);
     if ( body.length == 0) return;
-
+    
     const forumThreadCommentContent = {
-   
+      
       body: stripHtmlEntities(body),
       user_id: user.id,
       forum_thread_id: params.id
-  
+      
     };
-
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    
+    console.log("body", body);
+    console.log(forumThreadCommentContent.body, "forumThreadCommentContent");
     fetch(url, {
       method: "POST",
       headers: {

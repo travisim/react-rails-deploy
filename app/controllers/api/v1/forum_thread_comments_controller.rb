@@ -1,8 +1,13 @@
 class Api::V1::ForumThreadCommentsController < ApplicationController
     before_action :set_forumThreadComment, only: %i[show destroy]
+    before_action :get_commentsForCurrentThread, only: %i[showCommentsForThread]
     def index
       forumThreadComment = ForumThreadComment.all.order(created_at: :desc)
       render json: forumThreadComment 
+    end
+    def showCommentsForThread
+      
+      render json: @commentsForCurrentThread
     end
   
     def create
@@ -15,6 +20,7 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
     end
   
     def show
+
       render json: @forumThreadComment
     end
   
@@ -31,5 +37,11 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
     def set_forumThreadComment
       @forumThreadComment = ForumThreadComment.find(params[:id])
     end
+
+    def get_commentsForCurrentThread
+      @commentsForCurrentThread  = ForumThreadComment.where(:forum_thread_id => params[:forum_thread_id]).order(created_at: :desc)
+    end
+
+
   end
   
