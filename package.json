@@ -6,6 +6,7 @@
     "@emotion/styled": "^11.11.0",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.0-beta.2",
+    "@mui/icons-material": "^5.15.5",
     "@mui/material": "^5.15.4",
     "@popperjs/core": "^2.11.8",
     "autoprefixer": "^10.4.16",

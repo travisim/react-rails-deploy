@@ -23,15 +23,16 @@ const NewForumThread = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const url = "/api/v1/forum_thread/create";
-    console.log(title, category, body);
+    console.log(title, category, body,"creating");
     if ((title.length == 0 || body.length == 0, category.length == 0)) return;
-
+console.log(stripHtmlEntities(body),"stripHtmlEntities(body)");
     const forumThreadContent = {
       title,
       category,
       body: stripHtmlEntities(body),
       user_id: user.id,
     };
+    
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {

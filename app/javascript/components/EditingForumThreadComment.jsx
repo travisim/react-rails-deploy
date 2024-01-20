@@ -4,6 +4,10 @@ import TextField from "@mui/material/TextField";
 import { UserContext } from "./App";
 import LongMenu from "./MaxHeightMenu";
 
+
+
+
+
 const ForumThread = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -12,26 +16,26 @@ const ForumThread = () => {
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
   const [textFieldValue, setTextFieldValue] = useState("");
-  
 
   const [forumThreadComments, setForumThreadComments] = useState([]);
-  const [deleted, setDeleted] = useState(1);
 
+  
+
+  const token = document.querySelector('meta[name="csrf-token"]').content;
   useEffect(() => {
-    const url = `/api/v1/forum_thread/show/${params.id}`;
+    const url = `/api/v1/forum_thread_comments/showCommentsForThread/${params.id}`;
     fetch(url)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
+      .then((res) => {
+        if (res.ok) {
+          console.log(res, "res");
+          return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => setForumThread(response))
-      .catch(() => navigate("/forumThreads"));
-  }, [params.id]);
-
-  const token = document.querySelector('meta[name="csrf-token"]').content;
-  
+      .then((res) => setForumThreadComments(res))
+      .catch(/*() => navigate("/")*/);
+  }, []);
+  console.log(forumThreadComments, "forumThreadComments2");
   useEffect(() => {
     const url = "/api/v1/users/index";
     fetch(url)
@@ -67,123 +71,16 @@ const ForumThread = () => {
       .then(() => navigate("/forumThreads"))
       .catch((error) => console.log(error.message));
   };
-  const deleteForumThreadComments = (id) => {
-    const url = `/api/v1/forum_thread_comments/destroy/${id}`;
-    const token = document.querySelector('meta[name="csrf-token"]').content;
-    setDeleted(deleted+1);
-    fetch(url, {
-      method: "DELETE",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          fetchCommentsForThread();
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then(console.log("deleted id", id))
-      .catch((error) => console.log(error.message));
-  };
+
   const forumThreadBody = addHtmlEntities(forumThread.body);
-  function generateForumThreadCommentsHTML(forumThreadComments) {
-    const allForumThreadComments = forumThreadComments.map(
-      (forumThreadComments, index) => (
-        <div key={index} className="">
-          <div className="card mb-4">
-            {/* <img
-          src={forumThread.image}
-          className="card-img-top"
-          alt={`${recipe.title} image`}
-        /> */}
-            <div className="card-body position-relative">
-              {/* <div className="col-sm-12 col-lg-7"> */}
-              <p
-                className="card-text"
-                dangerouslySetInnerHTML={{
-                  __html: `${addHtmlEntities(forumThreadComments.body)}`,
-                }}
-              ></p>
-              { forumThreadComments.id}
-              {/* </div> */}
-
-              {/* {
-                allUsers.find((user) => {
-                  return user.id === forumThreadComments.user_id;
-                }).username
-              } */}
-              <a className="position-absolute bottom-0 end-0">
-                <div className="col-sm-12 col-lg-2">
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    key={index}
-                    onClick={(event) => {
-                      // deleteForumThreadComment();
-                      const id = forumThreadComments.id;
-                      deleteForumThreadComments(id);
-                      console.log(id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-                {/* <LongMenu/> */}
-              </a>
-
-              {/* <Link
-              to={`/forumThreadComments/${forumThreadComments.id}`}
-              className="btn custom-button"
-            >
-              View comment
-            </Link> */}
-            </div>
-          </div>
-        </div>
-      )
-    );
-    return allForumThreadComments
-  }
-  const NoForumThreadCommentsHTML = (
-    <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
-      <h4>
-        No Comments yet. Why not{" "}
-        <Link to="/newForumThreadComments">create one</Link>
-      </h4>
-    </div>
+  console.log(forumThread.body, "forumThreadBody");
+  console.log(forumThreadBody, "forumThreadBody");
+  // console.log(LongMenu(), "LongMenu");
+  console.log(
+    forumThreadComments[1],
+    "forumThreadComments"
   );
-  function ForumThreadCommentsDeterminer(forumThreadComments) {
-    if (forumThreadComments.length > 0) {
-      return generateForumThreadCommentsHTML(forumThreadComments);
-    } else {
-      return NoForumThreadCommentsHTML;
-    }
-  }
-
-  function fetchCommentsForThread() {
-    const url = `/api/v1/forum_thread_comments/showCommentsForThread/${params.id}`;
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          console.log(res, "res");
-          return res.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then((res) => {
-        setForumThreadComments(ForumThreadCommentsDeterminer(res));
-        
-        console.log("running", deleted);
-      })
-      .catch(/*() => navigate("/")*/);
-    
-  }
-  useEffect(() => {
-    fetchCommentsForThread()
-  }, []);
+ 
   const stripHtmlEntities = (str) => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
@@ -219,8 +116,6 @@ const ForumThread = () => {
     })
       .then((response) => {
         if (response.ok) {
-          fetchCommentsForThread();
-
           return response.json();
         }
         throw new Error("Network response was not ok.");
@@ -284,7 +179,9 @@ const ForumThread = () => {
             </div>
           </div>
           <div className="row">
-            {forumThreadComments}
+            {
+              allForumThreadComments
+        }
           </div>
 
           <div className="col-sm-12 col-lg-2">
