@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { UserContext } from "./App";
-import LongMenu from "./MaxHeightMenu";
+// import LongMenu from "./MaxHeightMenu";
 
 const ForumThread = () => {
   const params = useParams();
@@ -12,10 +12,9 @@ const ForumThread = () => {
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
   const [textFieldValue, setTextFieldValue] = useState("");
-  
 
   const [forumThreadComments, setForumThreadComments] = useState([]);
-  const [deleted, setDeleted] = useState(1);
+  // const [deleted, setDeleted] = useState(1);
 
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;
@@ -31,7 +30,7 @@ const ForumThread = () => {
   }, [params.id]);
 
   const token = document.querySelector('meta[name="csrf-token"]').content;
-  
+
   useEffect(() => {
     const url = "/api/v1/users/index";
     fetch(url)
@@ -70,7 +69,7 @@ const ForumThread = () => {
   const deleteForumThreadComments = (id) => {
     const url = `/api/v1/forum_thread_comments/destroy/${id}`;
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    setDeleted(deleted+1);
+    // setDeleted(deleted+1);
     fetch(url, {
       method: "DELETE",
       headers: {
@@ -85,7 +84,7 @@ const ForumThread = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then(console.log("deleted id", id))
+      // .then(console.log("deleted id", id))
       .catch((error) => console.log(error.message));
   };
   const forumThreadBody = addHtmlEntities(forumThread.body);
@@ -99,7 +98,7 @@ const ForumThread = () => {
           className="card-img-top"
           alt={`${recipe.title} image`}
         /> */}
-            <div className="card-body position-relative">
+            <div className="card-body  col-lg-10">
               {/* <div className="col-sm-12 col-lg-7"> */}
               <p
                 className="card-text"
@@ -107,7 +106,7 @@ const ForumThread = () => {
                   __html: `${addHtmlEntities(forumThreadComments.body)}`,
                 }}
               ></p>
-              { forumThreadComments.id}
+              {forumThreadComments.id}
               {/* </div> */}
 
               {/* {
@@ -115,24 +114,6 @@ const ForumThread = () => {
                   return user.id === forumThreadComments.user_id;
                 }).username
               } */}
-              <a className="position-absolute bottom-0 end-0">
-                <div className="col-sm-12 col-lg-2">
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    key={index}
-                    onClick={(event) => {
-                      // deleteForumThreadComment();
-                      const id = forumThreadComments.id;
-                      deleteForumThreadComments(id);
-                      console.log(id);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-                {/* <LongMenu/> */}
-              </a>
 
               {/* <Link
               to={`/forumThreadComments/${forumThreadComments.id}`}
@@ -141,11 +122,45 @@ const ForumThread = () => {
               View comment
             </Link> */}
             </div>
+            <div
+              className="card-body  text-right  btn-toolbar "
+              style={{ width: "18rem" }}
+            >
+              <div  className="btn-group mr-2" role="group" >
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={(event) => {
+                    // deleteForumThreadComment();
+                    const id = forumThreadComments.id;
+                    // updateForumThreadComments(id);
+                    console.log(id);
+                  }}
+                >
+                  Edit
+                </button>
+              </div>
+              <div className="btn-group mr-2" role="group" >
+                <button
+                  type="button"
+                  className="btn btn-danger "
+                  onClick={(event) => {
+                    // deleteForumThreadComment();
+                    const id = forumThreadComments.id;
+                    deleteForumThreadComments(id);
+                    console.log(id);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+              {/* <LongMenu/> */}
+            </div>
           </div>
         </div>
       )
     );
-    return allForumThreadComments
+    return allForumThreadComments;
   }
   const NoForumThreadCommentsHTML = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
@@ -175,14 +190,13 @@ const ForumThread = () => {
       })
       .then((res) => {
         setForumThreadComments(ForumThreadCommentsDeterminer(res));
-        
-        console.log("running", deleted);
+
+        // console.log("running", deleted);
       })
       .catch(/*() => navigate("/")*/);
-    
   }
   useEffect(() => {
-    fetchCommentsForThread()
+    fetchCommentsForThread();
   }, []);
   const stripHtmlEntities = (str) => {
     return String(str)
@@ -283,9 +297,7 @@ const ForumThread = () => {
               {/* <h5 className="card-title">{forumThreadComments.body}</h5> */}
             </div>
           </div>
-          <div className="row">
-            {forumThreadComments}
-          </div>
+          <div className="row">{forumThreadComments}</div>
 
           <div className="col-sm-12 col-lg-2">
             <button

@@ -8,8 +8,7 @@ import ForumThread from "./ForumThread";
 import NewForumThread from "./NewForumThread";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
-// import ForumThreadComments from "./ForumThreadComments";
-
+// import EditingForumThread from "./EditingForumThread";
 import ResponsiveAppBar from "./ResponsiveAppBar";
 
 export const UserContext = createContext();
@@ -57,6 +56,7 @@ const App = () => {
               <Route path="/newForumThread" element={<NewForumThread />} />
               <Route path="/signIn" element={<SignIn />} />
               <Route path="/signUp" element={<SignUp />} />
+              {/* <Route path="/editingForumThread/:id"  element={<EditingForumThread />}/> */}
             </Routes>
           </TokenContext.Provider>
         </UserContext.Provider>

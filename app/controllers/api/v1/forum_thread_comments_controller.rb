@@ -18,6 +18,13 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
         render json: ForumThreadComment.errors
       end
     end
+    def update 
+      if @forumThreadComment.update(event_params)
+        render json: @forumThreadComment
+      else
+        render nothing: true, status: :unprocessable_entity
+      end
+    end
   
     def show
 
