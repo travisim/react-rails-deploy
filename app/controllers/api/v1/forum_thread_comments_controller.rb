@@ -1,5 +1,5 @@
 class Api::V1::ForumThreadCommentsController < ApplicationController
-    before_action :set_forumThreadComment, only: %i[show destroy]
+    before_action :set_forumThreadComment, only: %i[show destroy update]
     before_action :get_commentsForCurrentThread, only: %i[showCommentsForThread]
     def index
       forumThreadComment = ForumThreadComment.all.order(created_at: :desc)
@@ -19,8 +19,8 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
       end
     end
     def update 
-      if @forumThreadComment.update(event_params)
-        render json: @forumThreadComment
+      if @forumThreadComment.update(forumThreadComment_params)
+        render json:  { message: 'Post Edited!' }
       else
         render nothing: true, status: :unprocessable_entity
       end
@@ -41,6 +41,8 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
     def forumThreadComment_params
       params.require(:forum_thread_comment).permit( :body,:forum_thread_id, :user_id)
     end
+     
+   
     def set_forumThreadComment
       @forumThreadComment = ForumThreadComment.find(params[:id])
     end

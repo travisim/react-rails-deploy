@@ -15,7 +15,7 @@ Rails.application.routes.draw do
       post 'forum_thread_comments/create'
       get 'forum_thread_comments/showCommentsForThread/:forum_thread_id', to: 'forum_thread_comments#showCommentsForThread'
       
-      get 'forum_thread_comments/update/:id', to: 'forum_thread_comments#update'
+      put 'forum_thread_comments/update/:id', to: 'forum_thread_comments#update'
 
       get 'forum_thread_comments/show/:id', to: 'forum_thread_comments#show'
       delete 'forum_thread_comments/destroy/:id', to: 'forum_thread_comments#destroy'

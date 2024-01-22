@@ -127,18 +127,12 @@ const ForumThread = () => {
               style={{ width: "18rem" }}
             >
               <div  className="btn-group mr-2" role="group" >
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={(event) => {
-                    // deleteForumThreadComment();
-                    const id = forumThreadComments.id;
-                    // updateForumThreadComments(id);
-                    console.log(id);
-                  }}
-                >
-                  Edit
-                </button>
+              <Link
+            to={`/editForumThreadComment/${forumThreadComments.id}`}
+            className="btn custom-button"
+          >
+            Edit
+          </Link>
               </div>
               <div className="btn-group mr-2" role="group" >
                 <button
