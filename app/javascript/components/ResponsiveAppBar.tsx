@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-// import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { UserContext } from "./App";
 // import { Link } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
+import Grid from '@mui/material/Grid';
 
 
 const pages = ["Products"];
@@ -26,9 +27,9 @@ function ResponsiveAppBar() {
   const { user, setUser } = React.useContext(UserContext);
   function displayLoginStatus() {
     if (user === null) {
-      return "not logged in";
+      return(  <Typography textAlign="center"></Typography>);
     } else {
-      return `logged in as "${user.username}";`;
+      return(<Typography textAlign="center">Welcome back {user.username}</Typography>) ;
     }
   }
 
@@ -41,13 +42,17 @@ function ResponsiveAppBar() {
 
   function displaySignInOutbuttons() {
     if (user === null) {
-      return (<div>
+      return (
+
+        <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
         <MenuItem component={Link} to="/signIn">
           <Typography textAlign="center">Sign In</Typography>
         </MenuItem>
+
         <MenuItem component={Link} to="/signUp">
           <Typography textAlign="center">Sign up</Typography>
-        </MenuItem></div>
+        </MenuItem>
+        </Box>
       );
     }
     else {
@@ -114,7 +119,7 @@ function ResponsiveAppBar() {
             </MenuItem>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -122,8 +127,8 @@ function ResponsiveAppBar() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              {/* <MenuIcon /> */}
-            </IconButton>
+              <MenuIcon />
+            </IconButton> */}
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -157,7 +162,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/forumThreads"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -169,25 +174,27 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            Forum
             </Typography>
         </MenuItem>
             
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-          {displaySignInOutbuttons()}
+          <Box sx={{ flexGrow: 2, flexDirection: 'row' }}>
+            
            
           
-      
+          
           
           </Box>
+          {displaySignInOutbuttons()}
           <Box>
-            <Button
+            <MenuItem
               // key={page}
               // onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
+              uppercase='false'
             >
               {displayLoginStatus()}
-            </Button>
+            </MenuItem>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

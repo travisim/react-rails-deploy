@@ -10,26 +10,28 @@
 9.times do |i|
   User.create(
     
-   username: "name #{i+1}",
+   username: ["Frank","Dean","Tom","Rosemary","Elizabeth"].sample,
 
   
   )
 end
-9.times do |i|
+18.times do |i|
     ForumThread.create(
-      title: "title #{i + 1}",
-      body: 'hi, bonjour, hola, ciao, hallo, namaste, salaam, zdras-tvuy-te, ohayo, marhaba, ni hao, shalom, goddag, ahoj, annyeong, bom dia, sveiki, merhaba, selamat pagi, selamat siang, selamat sore, selamat malam, selamat petang, selamat tidur, selamat beristirahat, selamat jalan, selamat datang, selamat tinggal, selamat makan, selamat bersenang-senang, selamat bersantai, selamat berlibur, selamat berjuang, selamat bekerja, selamat beraktivitas, selamat berolahraga, selamat bermain, selamat berpesta, selamat berpesta pora, selamat berpesta kembang api, selamat berpesta minum-minuman keras, selamat berpesta narkoba, selamat berpesta seks bebas, selamat berpesta seks bebas tanpa kondom, selamat berpesta seks bebas tanpa kondom dan KB, selamat berpesta seks bebas tanpa kondom, KB, dan suntik HIV, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, dan kematian, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, dan neraka, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, dan siksaan, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, dan kekal, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, kekal, dan keabadian, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, kekal, keabadian, dan kekal abadian, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, kekal, keabadian',
-    category:"jokes,stories,news,memes,other",
+      title: ["Which Courses should i S/U?", "Where to go For SEP?", "Which degree is right for me?","Which hall to choose?"].sample,
+      body: ["I have been considering these few choices but i have no idea, perhaps you could enlighten me?", "I have done much research but have yet to come to a conclusion, Please help me"].sample,
+    category:["Question","Discussion","Off-Advice","Others"].sample,
     # author: "author #{i + 1}",
-    user_id: 1
+    user_id: Random.rand(9)+1
     )
 end
-9.times do |i|
-  ForumThreadComments.create(
+36.times do |i|
+  ForumThreadComment.create(
     
-    body: "#{i}why,help",
+    body: ["Google is your best friend", "Read the FAQ", "Ask your seniors", "Ask your friends"].sample,
   
-forum_thread_id: 1,
-  user_id: 1
+  forum_thread_id: Random.rand(18)+1,
+  user_id: Random.rand(9)+1
+  
   )
 end
+# rake db:drop db:create db:migrate
