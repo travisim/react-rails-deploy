@@ -7,6 +7,7 @@ const ForumThreads = () => {
 
   const [forumThreads, setForumThreads] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState("All"); 
 
   // const { user, setAllUsers } = useContext(UserContext);
 
@@ -20,7 +21,7 @@ const ForumThreads = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((res) => setForumThreads(res))
+      .then((res) => setForumThreads(ForumThreadDeterminer(res)))
       .catch(() => navigate("/"));
   }, []);
   useEffect(() => {
@@ -35,38 +36,79 @@ const ForumThreads = () => {
       .then((res) => setAllUsers(res))
       .catch(() => navigate("/"));
   }, []);
+
+  const NoForumThreadHTML = (
+    <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
+      <h4>
+        No Forum Threads In This Category yet. 
+      </h4>
+    </div>
+  );
+  function ForumThreadDeterminer(forumThread) {
+    if (forumThread.length > 0) {
+      return generateForumThreadHTML(forumThread);
+    } else {
+      return NoForumThreadHTML;
+    }
+  }
+  function fetchForumThreadsByCategory(category) {
+    const url = `/api/v1/forum_thread/showForumThreadsByCategory/${category}`;
+    fetch(url)
+      .then((res) => {
+        if (res.ok) {
+          console.log(res, "res");
+          return res.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then((res) => {
+        setForumThreads(ForumThreadDeterminer(res));
+
+        // console.log("running", deleted);
+      })
+      .catch(/*() => navigate("/")*/);
+  }
+  function FilterbyCategory(event) {
+    console.log(event.target.value, "event.target.value");
+    setCurrentFilter(event.target.value);
+    fetchForumThreadsByCategory(event.target.value);
+  }
+ 
   // console.log(users, "uuuuuuuuussssserrr");
   // console.log(forumThreads, "forumThreads")
-  const allForumThread = forumThreads.map((forumThread, index) => (
-    <div key={index} className="col-md-12 col-lg-12">
-      <div className="card mb-4">
-        {/* <img
+  function generateForumThreadHTML(forumThreads) {
+    const allForumThread = forumThreads.map((forumThread, index) => (
+      <div key={index} className="col-md-12 col-lg-12">
+        <div className="card mb-4">
+          {/* <img
           src={forumThread.image}
           className="card-img-top"
           alt={`${recipe.title} image`}
         /> */}
-        <div className="card-body">
-          <h5 className="card-title">{forumThread.title}</h5>
-          <h5 className="card-title">{forumThread.category}</h5>
+          <div className="card-body">
+            <h5 className="card-title">{forumThread.title}</h5>
+            <h5 className="card-title">{forumThread.category}</h5>
 
-          {/* <h5 className="card-title">{allUsers.find(user => {return user.id === forumThread.user_id}).username}</h5> */}
-          <Link
-            to={`/forumThread/${forumThread.id}`}
-            className="btn custom-button"
-          >
-            View Thread
-          </Link>
-          <Link
-            to={`/editForumThread/${forumThread.id}`}
-            className="btn custom-button"
-          >
-            Edit
-          </Link>
+            {/* <h5 className="card-title">{allUsers.find(user => {return user.id === forumThread.user_id}).username}</h5> */}
+            <Link
+              to={`/forumThread/${forumThread.id}`}
+              className="btn custom-button"
+            >
+              View Thread
+            </Link>
+            <Link
+              to={`/editForumThread/${forumThread.id}`}
+              className="btn custom-button"
+            >
+              Edit
+            </Link>
          
+          </div>
         </div>
       </div>
-    </div>
-  ));
+    ));
+    return allForumThread;
+  }
   const noForumThread = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>
@@ -79,24 +121,45 @@ const ForumThreads = () => {
     <>
       <section className="jumbotron jumbotron-fluid text-center">
         <div className="container py-5">
-          <h1 className="display-4">ForumThread for every occasion</h1>
+          <h1 className="display-4">Forum Threads</h1>
           <p className="lead text-muted">
-            We’ve pulled together our most popular forumThread, our latest
-            additions, and our editor’s picks, so there’s sure to be something
-            tempting for you to try.
+            Discuss about life in NUS
           </p>
         </div>
       </section>
       <div className="py-5">
         <main className="container">
           <div className="text-end mb-3">
+            
             <Link to="/newForumThread" className="btn custom-button">
               Create New Thread
             </Link>
 
           </div>
+          <div className=" text-end mb-3">
+              <label htmlFor="category">
+                Filter by Category
+                <select
+                  type="text"
+                  name="category"
+                  id="category"
+                  className="form-control"
+                  required
+                  // value={forumThread.category}
+                  onChange={FilterbyCategory}
+                  defaultValue="All"
+              >
+                <option value="All">All</option>
+                  <option value="Question">Question</option>
+                  <option value="Discussion">Discussion</option>
+                  <option value="Off-Advice">Off-Advice</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+            </div>
           <div className="row">
-            {forumThreads.length > 0 ? allForumThread : noForumThread}
+          
+            {forumThreads}
           </div>
           <Link to="/" className="btn btn-link">
             Home

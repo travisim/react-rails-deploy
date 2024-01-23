@@ -55,6 +55,7 @@ const EditForumThreadComment = () => {
       .then((response) => setForumThreadComment(response))
       .catch();
   }, []);
+  console.log( "forumThread3");
 
   const handleChange = (e) => {
     setForumThreadComment({
@@ -87,7 +88,7 @@ const EditForumThreadComment = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then()
+      .then(()=>navigate(`/forumThread/${forumThreadComment.forum_thread_id}` ))
       .catch((error) => console.log(error.message));
   };
 

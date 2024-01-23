@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { UserContext } from "./App";
@@ -7,9 +7,6 @@ const EditForumThread = () => {
   const params = useParams();
 
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Question");
-  const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
   const [forumThread, setForumThread] = useState([]);
 
@@ -42,17 +39,41 @@ const EditForumThread = () => {
   //     .catch(/*() => navigate("/")*/);
   // }
 
+  useEffect(() => {
+    const url = `/api/v1/forum_thread/show/${params.id}`;
+    fetch(url)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then((response) => setForumThread(response))
+      .catch();
+  }, []);
+  console.log(forumThread, "forumThread2");
+
+  const handleChange = (e) => {
+    setForumThread({
+      ...forumThread,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
     const url = `/api/v1/forum_thread/update/${params.id}`;
-    console.log(title, category, body, "creating");
-    if (body.length == 0) return;
-    console.log(stripHtmlEntities(body), "stripHtmlEntities(body)");
-  
+    if (
+      forumThread.title.length == 0 ||
+      forumThread.category.length == 0 ||
+      forumThread.body.length == 0
+    )
+      return;
+
     const forumThreadContent = {
-      title,
-      category,
-      body: stripHtmlEntities(body),
+      title: forumThread.title,
+      category: forumThread.category,
+      body: stripHtmlEntities(forumThread.body),
       // user_id: user.id,
     };
 
@@ -71,7 +92,7 @@ const EditForumThread = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then()
+      .then(() => navigate(`/forumThreads`))
       .catch((error) => console.log(error.message));
   };
 
@@ -81,15 +102,16 @@ const EditForumThread = () => {
         <div className="col-sm-12 col-lg-6 offset-lg-3">
           <h1 className="font-weight-normal mb-5">Edit Post</h1>
           <form onSubmit={onSubmit}>
-          <div className="form-group">
+            <div className="form-group">
               <label htmlFor="title">Recipe name</label>
               <input
                 type="text"
-                name="name"
+                name="title"
                 id="title"
                 className="form-control"
                 required
-                onChange={(event) => onChange(event, setTitle)}
+                defaultValue={forumThread.title}
+                onChange={handleChange}
               />
             </div>
             <div className="form-group">
@@ -97,12 +119,13 @@ const EditForumThread = () => {
                 category name
                 <select
                   type="text"
-                  name="name"
+                  name="category"
                   id="category"
                   className="form-control"
                   required
-                  onChange={(event) => onChange(event, setCategory)}
-                  defaultValue="Question"
+                  value={forumThread.category}
+                  onChange={handleChange}
+                  // defaultValue="Question"
                 >
                   <option value="Question">Question</option>
                   <option value="Discussion">Discussion</option>
@@ -111,16 +134,19 @@ const EditForumThread = () => {
                 </select>
               </label>
             </div>
+            <div className="form-group">
+              <label htmlFor="body">Preparation Instructions</label>
+              <textarea
+                className="form-control"
+                id="body"
+                name="body"
+                rows="5"
+                required
+                value={forumThread.body}
+                onChange={handleChange}
+              />
+            </div>
 
-            <label htmlFor="body">Preparation Instructions</label>
-            <textarea
-              className="form-control"
-              id="body"
-              name="body"
-              rows="5"
-              required
-              onChange={(event) => onChange(event, setBody)}
-            />
             <button type="submit" className="btn custom-button mt-3">
               Create Recipe
             </button>
