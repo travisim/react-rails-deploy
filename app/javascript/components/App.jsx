@@ -11,6 +11,7 @@ import SignUp from "./SignUp";
 // import EditingForumThread from "./EditingForumThread";
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import EditForumThreadComment from "./EditForumThreadComment";
+import EditForumThread from "./EditForumThread";
 
 export const UserContext = createContext();
 export const TokenContext = createContext();
@@ -54,6 +55,8 @@ const App = () => {
               <Route path="/forumThreads" element={<ForumThreads />} />
               {/* <Route path="/forumThreadComments" element={<ForumThreadComments />}/> */}
               <Route path="/forumThread/:id" element={<ForumThread />} />
+              <Route path="/EditForumThread/:id" element={<EditForumThread />} />
+              
               <Route path="/EditForumThreadComment/:id" element={<EditForumThreadComment />} />
               
               <Route path="/newForumThread" element={<NewForumThread />} />

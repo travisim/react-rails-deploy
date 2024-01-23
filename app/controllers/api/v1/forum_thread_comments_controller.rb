@@ -20,7 +20,7 @@ class Api::V1::ForumThreadCommentsController < ApplicationController
     end
     def update 
       if @forumThreadComment.update(forumThreadComment_params)
-        render json:  { message: 'Post Edited!' }
+        render json:  { message: 'Comment Edited!' }
       else
         render nothing: true, status: :unprocessable_entity
       end

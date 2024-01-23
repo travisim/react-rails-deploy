@@ -10,6 +10,9 @@ Rails.application.routes.draw do
       post 'forum_thread/create'
       get 'forum_thread/show/:id', to: 'forum_thread#show'
       delete 'forum_thread/destroy/:id', to: 'forum_thread#destroy'
+      get 'forum_thread/showForumThreadsByCategory/:category', to: 'forum_thread#showForumThreadsByCategory'
+      put 'forum_thread/update/:id', to: 'forum_thread#update'
+
 
       get 'forum_thread_comments/index'
       post 'forum_thread_comments/create'

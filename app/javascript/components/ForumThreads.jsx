@@ -50,13 +50,19 @@ const ForumThreads = () => {
           <h5 className="card-title">{forumThread.category}</h5>
 
           {/* <h5 className="card-title">{allUsers.find(user => {return user.id === forumThread.user_id}).username}</h5> */}
-
           <Link
             to={`/forumThread/${forumThread.id}`}
             className="btn custom-button"
           >
             View Thread
           </Link>
+          <Link
+            to={`/editForumThread/${forumThread.id}`}
+            className="btn custom-button"
+          >
+            Edit
+          </Link>
+         
         </div>
       </div>
     </div>
