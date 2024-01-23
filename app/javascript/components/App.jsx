@@ -15,12 +15,16 @@ import EditForumThread from "./EditForumThread";
 
 export const UserContext = createContext();
 export const TokenContext = createContext();
+export const AllUsersContext = createContext();
+
 
 // export default props => <div>{Routes}</div>;
 // export const UserContext = React.createContext(null)
 const App = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [allUsers, setAllUsers] = useState(null);
+
 
   console.log("localStorage.token", localStorage.token);
   useEffect(() => {
@@ -35,6 +39,21 @@ const App = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const url = "/api/v1/users/index";
+    fetch(url)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then((res) => {
+        setAllUsers(res);
+      })
+      .catch(() => navigate("/"));
+  }, []);
+
   function handleLogout() {
     setUser(null);
     localStorage.removeItem("token");
@@ -46,6 +65,7 @@ const App = () => {
   return (
     <div>
       <Router>
+        <AllUsersContext.Provider value={{ allUsers: allUsers, setAllUsers: setAllUsers }}>   
         <UserContext.Provider value={{ user: user, setUser: setUser }}>
           <TokenContext.Provider value={{ token: token, setToken: setToken }}>
             <ResponsiveAppBar />
@@ -66,7 +86,8 @@ const App = () => {
               {/* <Route path="/editingForumThread/:id"  element={<EditingForumThread />}/> */}
             </Routes>
           </TokenContext.Provider>
-        </UserContext.Provider>
+          </UserContext.Provider>
+        </AllUsersContext.Provider>
       </Router>
     </div>
   );

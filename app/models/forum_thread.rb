@@ -2,7 +2,7 @@ class ForumThread < ApplicationRecord
 
     allowed_categories = ["Question", "Discussion", "Off-Advice", "Other"]
 
-    
+    validates :author, presence: true
    validates :title, presence: true
     validates :body, presence: true
     validates :category, presence: true,:inclusion=> { :in => allowed_categories }

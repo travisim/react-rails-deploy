@@ -23,16 +23,16 @@ const NewForumThread = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const url = "/api/v1/forum_thread/create";
-    console.log(title, category, body,"creating");
+    console.log(title, category, body, "creating");
     if ((title.length == 0 || body.length == 0, category.length == 0)) return;
-console.log(stripHtmlEntities(body),"stripHtmlEntities(body)");
+    console.log(stripHtmlEntities(body), "stripHtmlEntities(body)");
     const forumThreadContent = {
       title,
       category,
       body: stripHtmlEntities(body),
+      author: user.username,
       user_id: user.id,
     };
-    
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -58,11 +58,11 @@ console.log(stripHtmlEntities(body),"stripHtmlEntities(body)");
       <div className="row">
         <div className="col-sm-12 col-lg-6 offset-lg-3">
           <h1 className="font-weight-normal mb-5">
-            Add a new recipe to our awesome recipe collection.
+            Add a new Thread
           </h1>
           <form onSubmit={onSubmit}>
             <div className="form-group">
-              <label htmlFor="title">Recipe name</label>
+              <label htmlFor="title">Thread Title</label>
               <input
                 type="text"
                 name="name"
@@ -102,10 +102,11 @@ console.log(stripHtmlEntities(body),"stripHtmlEntities(body)");
               onChange={(event) => onChange(event, setBody)}
             />
             <button type="submit" className="btn custom-button mt-3">
-              Create Recipe
+              Create Thread
             </button>
-            <Link to="/forumThreads" className="btn btn-link mt-3">
-              Back to recipes
+
+            <Link to="/forumThreads" className="btn custom-button ">
+              Back to threads
             </Link>
           </form>
         </div>

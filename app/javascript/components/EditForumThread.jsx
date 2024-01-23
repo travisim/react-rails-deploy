@@ -103,7 +103,7 @@ const EditForumThread = () => {
           <h1 className="font-weight-normal mb-5">Edit Post</h1>
           <form onSubmit={onSubmit}>
             <div className="form-group">
-              <label htmlFor="title">Recipe name</label>
+              <label htmlFor="title">Thread Name</label>
               <input
                 type="text"
                 name="title"
@@ -150,9 +150,10 @@ const EditForumThread = () => {
             <button type="submit" className="btn custom-button mt-3">
               Create Recipe
             </button>
-            <Link to="/forumThreads" className="btn btn-link mt-3">
-              Back to recipes
-            </Link>
+            
+        <Link to="/forumThreads" className="btn custom-button ">
+          Back to threads
+        </Link>
           </form>
         </div>
       </div>

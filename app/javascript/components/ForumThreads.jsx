@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 import { Create, CreateNewFolder } from "@mui/icons-material";
+import TimeAgo from 'react-timeago';
+
+
 
 const ForumThreads = () => {
   const navigate = useNavigate();
@@ -108,25 +111,25 @@ const ForumThreads = () => {
     const allForumThread = forumThreads.map((forumThread, index) => (
       <div key={index} className="col-md-12 col-lg-12">
         <div className="card mb-4">
-          {/* <img
-          src={forumThread.image}
-          className="card-img-top"
-          alt={`${recipe.title} image`}
-        /> */}
           <div className="card-body">
             <h5 className="card-title">{forumThread.title}</h5>
-            <h5 className="card-title">{forumThread.category}</h5>
+            <h6 className="card-subtitle mb-2 text-muted">{forumThread.category}</h6>
             {/* <h5 className="card-title">
               {allUsers.find((user) => user.id == forumThread.user_id)
                 ? allUsers.find((user) => user.id == forumThread.user_id).username:"feef"
                 }
             </h5> */}
-            <h5 className="card-title">
+            <p className="card-text">
 
-              { allUsers.find((user) => user.id == forumThread.user_id).username
-                }
-            </h5>
-            <h5 className="card-title">{forumThread.user_id}</h5>
+              Posted by { allUsers.find((user) => user.id == forumThread.user_id).username
+              }
+            </p>
+
+            <div className="card-text">
+
+            <TimeAgo date={forumThread.created_at} /> 
+            </div>
+            {/* <h5 className="card-title">{forumThread.user_id}</h5> */}
             {/* <h5 className="card-title">
               {allUsers.find((user) => {
                 return user.id == forumThread.user_id;

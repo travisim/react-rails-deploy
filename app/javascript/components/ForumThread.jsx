@@ -1,21 +1,38 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import { UserContext } from "./App";
+import { UserContext, AllUsersContext } from "./App";
 // import LongMenu from "./MaxHeightMenu";
+import TimeAgo from "react-timeago";
 
 const ForumThread = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [forumThread, setForumThread] = useState({ title: "" });
-  const [allUsers, setAllUsers] = useState([]);
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
+  const [allUsers, setAllUsers] = useState([]);
+
   const [textFieldValue, setTextFieldValue] = useState("");
 
   const [forumThreadComments, setForumThreadComments] = useState([]);
   // const [deleted, setDeleted] = useState(1);
 
+  useEffect(() => {
+    const url = "/api/v1/users/index";
+    fetch(url)
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      .then((res) => {
+        setAllUsers(res);
+      })
+      .catch(() => navigate("/"));
+  }, []);
+  console.log(allUsers, "AllUsers");
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;
     fetch(url)
@@ -31,18 +48,6 @@ const ForumThread = () => {
 
   const token = document.querySelector('meta[name="csrf-token"]').content;
 
-  useEffect(() => {
-    const url = "/api/v1/users/index";
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then((res) => setAllUsers(res))
-      .catch(() => navigate("/"));
-  }, []);
   const addHtmlEntities = (str) => {
     return String(str).replace(/&lt;/g, "<").replace(/&gt;/g, ">");
   };
@@ -89,31 +94,26 @@ const ForumThread = () => {
   };
   const forumThreadBody = addHtmlEntities(forumThread.body);
   function generateForumThreadCommentsHTML(forumThreadComments) {
+    // if (allUsers == null) {
+    //   return;
+    // }
     const allForumThreadComments = forumThreadComments.map(
       (forumThreadComments, index) => (
         <div key={index} className="">
           <div className="card mb-4">
-            {/* <img
-          src={forumThread.image}
-          className="card-img-top"
-          alt={`${recipe.title} image`}
-        /> */}
             <div className="card-body  col-lg-10">
               {/* <div className="col-sm-12 col-lg-7"> */}
-              <p
+              <h4
                 className="card-text"
                 dangerouslySetInnerHTML={{
                   __html: `${addHtmlEntities(forumThreadComments.body)}`,
                 }}
-              ></p>
-              {forumThreadComments.id}
-              {/* </div> */}
+              ></h4>
+              <p>{forumThreadComments.author}</p>
+            <TimeAgo date={forumThread.created_at} /> 
 
-              {/* {
-                allUsers.find((user) => {
-                  return user.id === forumThreadComments.user_id;
-                }).username
-              } */}
+              {/* </div> */}
+           
 
               {/* <Link
               to={`/forumThreadComments/${forumThreadComments.id}`}
@@ -126,15 +126,15 @@ const ForumThread = () => {
               className="card-body  text-right  btn-toolbar "
               style={{ width: "18rem" }}
             >
-              <div  className="btn-group mr-2" role="group" >
-              <Link
-            to={`/editForumThreadComment/${forumThreadComments.id}`}
-            className="btn custom-button"
-          >
-            Edit
-          </Link>
+              <div className="btn-group mr-2" role="group">
+                <Link
+                  to={`/editForumThreadComment/${forumThreadComments.id}`}
+                  className="btn custom-button"
+                >
+                  Edit
+                </Link>
               </div>
-              <div className="btn-group mr-2" role="group" >
+              <div className="btn-group mr-2" role="group">
                 <button
                   type="button"
                   className="btn btn-danger "
@@ -183,7 +183,8 @@ const ForumThread = () => {
         throw new Error("Network response was not ok.");
       })
       .then((res) => {
-        setForumThreadComments(ForumThreadCommentsDeterminer(res));
+        console.log(res, "res comments");
+        setForumThreadComments(res);
 
         // console.log("running", deleted);
       })
@@ -211,6 +212,8 @@ const ForumThread = () => {
 
     const forumThreadCommentContent = {
       body: stripHtmlEntities(body),
+      author: user.username,
+
       user_id: user.id,
       forum_thread_id: params.id,
     };
@@ -236,7 +239,8 @@ const ForumThread = () => {
       .then()
       .catch((error) => console.log(error.message));
   };
-
+  console.log(allUsers, "allUsers");
+  console.log(forumThreadComments, "forumThreadComments");
   return (
     <div className="">
       <div className="hero position-relative d-flex flex-column align-items-center justify-content-center">
@@ -247,24 +251,22 @@ const ForumThread = () => {
         <h4 className=" position-relative text-white">
           {forumThread.category}
         </h4>
+        <h4 className=" position-relative text-white">
+          { forumThread.author }
+        </h4>
+        <div
+          className=" position-relative text-white"
+          dangerouslySetInnerHTML={{
+            __html: `${forumThreadBody}`,
+          }}
+        />
       </div>
 
       <div className="container py-5">
         <div className="row">
           <div className="col-sm-12 col-lg-7">
-            <h5 className="mb-2">Body</h5>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `${forumThreadBody}`,
-              }}
-            />
+            {/* <h5 className="mb-2">Body</h5> */}
           </div>
-
-          {/* <img
-          src={forumThread.image}
-          className="card-img-top"
-          alt={`${recipe.title} image`}
-        /> */}
 
           <div className="row">
             <div className=" col-md-12 col-lg-12  mb-4">
@@ -278,6 +280,7 @@ const ForumThread = () => {
                     multiline
                     rows={5}
                     className="card form-control"
+                    // defaultValue="Add Comments"
                     onChange={(event) => onChange(event, setBody)}
                   />
                   <button
@@ -291,7 +294,7 @@ const ForumThread = () => {
               {/* <h5 className="card-title">{forumThreadComments.body}</h5> */}
             </div>
           </div>
-          <div className="row">{forumThreadComments}</div>
+          <div className="row">{ForumThreadCommentsDeterminer(forumThreadComments)}</div>
 
           <div className="col-sm-12 col-lg-2">
             <button
@@ -303,7 +306,8 @@ const ForumThread = () => {
             </button>
           </div>
         </div>
-        <Link to="/forumThreads" className="btn btn-link">
+
+        <Link to="/forumThreads" className="btn custom-button ">
           Back to threads
         </Link>
       </div>

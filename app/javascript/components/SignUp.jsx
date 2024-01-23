@@ -112,9 +112,10 @@ const SignUp = () => {
             <button type="submit" className="btn custom-button mt-3">
               Sign Up
             </button>
-            <Link to="/forumThreads" className="btn btn-link mt-3">
-              Back to recipes
-            </Link>
+            
+        <Link to="/forumThreads" className="btn custom-button ">
+          Back to threads
+        </Link>
           </form>
         </div>
       </div>
