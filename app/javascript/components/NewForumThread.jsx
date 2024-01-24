@@ -105,7 +105,7 @@ const NewForumThread = () => {
               Create Thread
             </button>
 
-            <Link to="/forumThreads" className="btn custom-button ">
+            <Link to="/forumThreads" className="btn custom-button mt-3 ">
               Back to threads
             </Link>
           </form>

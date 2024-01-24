@@ -150,10 +150,10 @@ const EditForumThread = () => {
             <button type="submit" className="btn custom-button mt-3">
               Create Recipe
             </button>
-            
-        <Link to="/forumThreads" className="btn custom-button ">
-          Back to threads
-        </Link>
+
+            <Link to="/forumThreads" className="btn custom-button mt-3 ">
+              Back to threads
+            </Link>
           </form>
         </div>
       </div>

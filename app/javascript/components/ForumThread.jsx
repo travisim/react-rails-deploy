@@ -32,7 +32,6 @@ const ForumThread = () => {
       })
       .catch(() => navigate("/"));
   }, []);
-  console.log(allUsers, "AllUsers");
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;
     fetch(url)
@@ -89,12 +88,10 @@ const ForumThread = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      // .then(console.log("deleted id", id))
+      .then(console.log("deleted id", id))
       .catch((error) => console.log(error.message));
   };
   const forumThreadBody = addHtmlEntities(forumThread.body);
-  console.log(user, "user");
-  console.log(forumThreadComments, "forumThreadcomments");
   function AccessControlComments(forumThreadCommentID) {
     if (user.id == forumThreadCommentID) {
       return    (<div>
@@ -114,13 +111,34 @@ const ForumThread = () => {
               // deleteForumThreadComment();
               const id = forumThreadComments.id;
               deleteForumThreadComments(id);
-              console.log(id);
             }}
           >
             Delete
           </button>
         </div>
       </div>)
+    }
+  }
+  function AccessControlThread(forumThreadID) {
+    if (user == null) return;
+    console.log(forumThreadID, "forumThreadID")
+    console.log(user.id, "user.id")
+    if (user.id == forumThreadID) {
+      return (
+        <div><button
+        type="button"
+        className="btn btn-danger"
+        onClick={deleteForumThread}
+      >
+        Delete thread
+      </button>
+        <Link
+        to={`/editForumThread/${forumThread.id}`}
+        className="btn custom-button"
+      >
+        Edit
+      </Link></div>);
+  
     }
   }
   function generateForumThreadCommentsHTML(forumThreadComments) {
@@ -158,7 +176,7 @@ const ForumThread = () => {
   const NoForumThreadCommentsHTML = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>
-        No Comments yet. Why not{" "}
+        No Comments yet, why not{" "}
         <Link to="/newForumThreadComments">create one</Link>
       </h4>
     </div>
@@ -176,16 +194,13 @@ const ForumThread = () => {
     fetch(url)
       .then((res) => {
         if (res.ok) {
-          console.log(res, "res");
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
       .then((res) => {
-        console.log(res, "res comments");
         setForumThreadComments(res);
 
-        // console.log("running", deleted);
       })
       .catch(/*() => navigate("/")*/);
   }
@@ -282,7 +297,7 @@ const ForumThread = () => {
                   />
                   <button
                     type="submit"
-                    className="btn btn-primary mb-2 custom-button position-absolute bottom-0 end-0  "
+                    className="btn btn-primary custom-button position-absolute bottom-0 end-0"
                   >
                     Comment
                   </button>
@@ -296,13 +311,7 @@ const ForumThread = () => {
           </div>
 
           <div className="col-sm-12 col-lg-2">
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={deleteForumThread}
-            >
-              Delete thread
-            </button>
+            { AccessControlThread(forumThread.user_id)}
           </div>
         </div>
 

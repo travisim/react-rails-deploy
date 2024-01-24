@@ -47,6 +47,10 @@ class Api::V1::ForumThreadController < ApplicationController
 
 
   def get_forumThreadsByCategory
+    if params[:category] == "All"
+      @forumThreadsByCategory  = ForumThread.all.order(created_at: :desc)
+    else
     @forumThreadsByCategory  = ForumThread.where(:category => params[:category]).order(created_at: :desc)
+    end
   end
 end

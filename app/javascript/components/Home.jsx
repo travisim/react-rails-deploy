@@ -7,7 +7,8 @@ export default () => (
       <div className="container secondary-color">
         <h1 className="display-4">Forum Threads</h1>
         <p className="lead">
-          A curated list of Forum Threads
+          Post threads which others can comment on.
+          Share your thoughts and experiences in NUS.
         </p>
         <hr className="my-4" />
         <Link
