@@ -2,30 +2,24 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 import TimeAgo from "react-timeago";
-
 const ForumThreads = () => {
   const navigate = useNavigate();
-
   const [forumThreads, setForumThreads] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("All");
-
   const { user, setUser } = useContext(UserContext);
-
- 
   useEffect(() => {
     const url = "/api/v1/users/index";
     fetch(url)
-      .then((res) => {
+      .then(res => {
         if (res.ok) {
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then((res) => setAllUsers(res))
+      .then(res => setAllUsers(res))
       .catch(() => navigate("/"));
   }, []);
-
   const NoForumThreadHTML = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>No Forum Threads In This Category yet.</h4>
@@ -41,29 +35,28 @@ const ForumThreads = () => {
   useEffect(() => {
     const url = "/api/v1/forum_thread/index";
     fetch(url)
-      .then((res) => {
+      .then(res => {
         if (res.ok) {
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then((res) => setForumThreads(ForumThreadDeterminer(res)))
+      .then(res => setForumThreads(ForumThreadDeterminer(res)))
       .catch(() => navigate("/"));
   }, []);
   function fetchForumThreadsByCategory(category) {
     const url = `/api/v1/forum_thread/showForumThreadsByCategory/${category}`;
     fetch(url)
-      .then((res) => {
+      .then(res => {
         if (res.ok) {
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then((res) => {
+      .then(res => {
         setForumThreads(ForumThreadDeterminer(res));
-
       })
-      .catch(/*() => navigate("/")*/);
+      .catch();
   }
   function FilterbyCategory(event) {
     setCurrentFilter(event.target.value);
@@ -80,16 +73,10 @@ const ForumThreads = () => {
   //     </Link>);
   //   }
   // }
- 
   function generateForumThreadHTML(forumThreads) {
     const allForumThread = forumThreads.map((forumThread, index) => (
       <div key={index} className="col-md-12 col-lg-12">
         <div className="card mb-4">
-          {/* <img
-          src={forumThread.image}
-          className="card-img-top"
-          alt={`${forumThread.title} image`}
-        /> */}
           <div className="card-body">
             <h5 className="card-title">{forumThread.title}</h5>
             <h6 className="card-title">{forumThread.category}</h6>
@@ -98,12 +85,6 @@ const ForumThreads = () => {
               <TimeAgo date={forumThread.created_at} />{" "}
             </p>
 
-            {/* <Link
-          to={`/editForumThread/${forumThread.id}`}
-          className="btn custom-button"
-        >
-          Edit
-        </Link> */}
             <Link
               to={`/forumThread/${forumThread.id}`}
               className="btn custom-button"
@@ -123,7 +104,6 @@ const ForumThreads = () => {
       </h4>
     </div>
   );
-
   return (
     <>
       <section className="jumbotron jumbotron-fluid text-center">
@@ -168,5 +148,4 @@ const ForumThreads = () => {
     </>
   );
 };
-
 export default ForumThreads;

@@ -9,7 +9,8 @@ const SignIn = () => {
   // const [token, setToken] = useState("");
   const { user, setToken } = useContext(TokenContext);
   const { token, setUser } = useContext(UserContext);
-
+  console.log(useContext(TokenContext),"token context")
+console.log("hihihihi")
   const [isUserCreated, setIsUserCreated] = useState("");
   const onChange = (event, setFunction) => {
     setFunction(event.target.value);

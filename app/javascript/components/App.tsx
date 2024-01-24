@@ -13,9 +13,9 @@ import ResponsiveAppBar from "./ResponsiveAppBar";
 import EditForumThreadComment from "./EditForumThreadComment";
 import EditForumThread from "./EditForumThread";
 
-export const UserContext = createContext();
-export const TokenContext = createContext();
-export const AllUsersContext = createContext();
+export const UserContext = createContext(null);
+export const TokenContext = createContext(null);
+export const AllUsersContext = createContext(null);
 
 
 // export default props => <div>{Routes}</div>;

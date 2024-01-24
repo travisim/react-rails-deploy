@@ -1,7 +1,6 @@
-import React from "react";
+import React, { FC } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
-
 
 document.addEventListener("turbo:load", () => {
   const root = createRoot(
