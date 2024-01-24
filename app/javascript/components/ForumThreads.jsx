@@ -10,7 +10,7 @@ const ForumThreads = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [currentFilter, setCurrentFilter] = useState("All"); 
 
-  // const { user, setAllUsers } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
 
   useEffect(() => {
@@ -74,10 +74,20 @@ const ForumThreads = () => {
     setCurrentFilter(event.target.value);
     fetchForumThreadsByCategory(event.target.value);
   }
- 
-  // console.log(users, "uuuuuuuuussssserrr");
-  // console.log(forumThreads, "forumThreads")
+  // function AccessControlThreads(forumThreadUserID) {
+  //   console.log(user.id, "user.id");
+  //   if (user.id == forumThreadUserID) {
+  //     return (<Link
+  //       to={`/editForumThread/${forumThread.id}`}
+  //       className="btn custom-button"
+  //     >
+  //       Edit
+  //     </Link>);
+  //   }
+  // }
+  console.log(user, "uuuuuuuuussssserrr");
   function generateForumThreadHTML(forumThreads) {
+    console.log(forumThreads, "forumThreads")
     const allForumThread = forumThreads.map((forumThread, index) => (
       <div key={index} className="col-md-12 col-lg-12">
         <div className="card mb-4">
@@ -98,12 +108,7 @@ const ForumThreads = () => {
             >
               View Thread
             </Link>
-            <Link
-              to={`/editForumThread/${forumThread.id}`}
-              className="btn custom-button"
-            >
-              Edit
-            </Link>
+            {/* { AccessControlThreads(forumThread.user_id)} */}
          
           </div>
         </div>

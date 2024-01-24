@@ -93,6 +93,36 @@ const ForumThread = () => {
       .catch((error) => console.log(error.message));
   };
   const forumThreadBody = addHtmlEntities(forumThread.body);
+  console.log(user, "user");
+  console.log(forumThreadComments, "forumThreadcomments");
+  function AccessControlComments(forumThreadCommentID) {
+    if (user.id == forumThreadCommentID) {
+      return    (<div>
+        <div className="btn-group mr-2" role="group">
+          <Link
+            to={`/editForumThreadComment/${forumThreadComments.id}`}
+            className="btn custom-button"
+          >
+            Edit
+          </Link>
+        </div>
+        <div className="btn-group mr-2" role="group">
+          <button
+            type="button"
+            className="btn btn-danger "
+            onClick={(event) => {
+              // deleteForumThreadComment();
+              const id = forumThreadComments.id;
+              deleteForumThreadComments(id);
+              console.log(id);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>)
+    }
+  }
   function generateForumThreadCommentsHTML(forumThreadComments) {
     // if (allUsers == null) {
     //   return;
@@ -110,44 +140,13 @@ const ForumThread = () => {
                 }}
               ></h4>
               <p>{forumThreadComments.author}</p>
-            <TimeAgo date={forumThread.created_at} /> 
-
-              {/* </div> */}
-           
-
-              {/* <Link
-              to={`/forumThreadComments/${forumThreadComments.id}`}
-              className="btn custom-button"
-            >
-              View comment
-            </Link> */}
+              <TimeAgo date={forumThread.created_at} />
             </div>
             <div
               className="card-body  text-right  btn-toolbar "
               style={{ width: "18rem" }}
             >
-              <div className="btn-group mr-2" role="group">
-                <Link
-                  to={`/editForumThreadComment/${forumThreadComments.id}`}
-                  className="btn custom-button"
-                >
-                  Edit
-                </Link>
-              </div>
-              <div className="btn-group mr-2" role="group">
-                <button
-                  type="button"
-                  className="btn btn-danger "
-                  onClick={(event) => {
-                    // deleteForumThreadComment();
-                    const id = forumThreadComments.id;
-                    deleteForumThreadComments(id);
-                    console.log(id);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
+              { AccessControlComments(forumThreadComments.user_id)}
               {/* <LongMenu/> */}
             </div>
           </div>
@@ -251,9 +250,7 @@ const ForumThread = () => {
         <h4 className=" position-relative text-white">
           {forumThread.category}
         </h4>
-        <h4 className=" position-relative text-white">
-          { forumThread.author }
-        </h4>
+        <h4 className=" position-relative text-white">{forumThread.author}</h4>
         <div
           className=" position-relative text-white"
           dangerouslySetInnerHTML={{
@@ -294,7 +291,9 @@ const ForumThread = () => {
               {/* <h5 className="card-title">{forumThreadComments.body}</h5> */}
             </div>
           </div>
-          <div className="row">{ForumThreadCommentsDeterminer(forumThreadComments)}</div>
+          <div className="row">
+            {ForumThreadCommentsDeterminer(forumThreadComments)}
+          </div>
 
           <div className="col-sm-12 col-lg-2">
             <button
