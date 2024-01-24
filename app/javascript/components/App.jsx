@@ -26,7 +26,6 @@ const App = () => {
   const [allUsers, setAllUsers] = useState(null);
 
 
-  console.log("localStorage.token", localStorage.token);
   useEffect(() => {
     if (localStorage.getItem("token")) {
       fetch("/login", {
@@ -61,7 +60,6 @@ const App = () => {
     console.log("logged out");
   }
 
-  console.log(user, "user", "app");
   return (
     <div>
       <Router>

@@ -21,24 +21,6 @@ const EditForumThread = () => {
     setFunction(event.target.value);
   };
 
-  // function fetchComment() {
-  //   const url = `/api/v1/forum_thread/show/${params.id}`;
-  //   fetch(url)
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         console.log(res, "res");
-  //         return res.json();
-  //       }
-  //       throw new Error("Network response was not ok.");
-  //     })
-  //     .then((res) => {
-  //       setForumThreadComment(res);
-
-  //       // console.log("running", deleted);
-  //     })
-  //     .catch(/*() => navigate("/")*/);
-  // }
-
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;
     fetch(url)
@@ -51,7 +33,6 @@ const EditForumThread = () => {
       .then((response) => setForumThread(response))
       .catch();
   }, []);
-  console.log(forumThread, "forumThread2");
 
   const handleChange = (e) => {
     setForumThread({

@@ -11,7 +11,6 @@ const ForumThreads = () => {
   const [currentFilter, setCurrentFilter] = useState("All");
 
   const { user, setUser } = useContext(UserContext);
-  console.log(user,"user111")
 
  
   useEffect(() => {
@@ -56,7 +55,6 @@ const ForumThreads = () => {
     fetch(url)
       .then((res) => {
         if (res.ok) {
-          console.log(res, "res");
           return res.json();
         }
         throw new Error("Network response was not ok.");
@@ -64,12 +62,10 @@ const ForumThreads = () => {
       .then((res) => {
         setForumThreads(ForumThreadDeterminer(res));
 
-        // console.log("running", deleted);
       })
       .catch(/*() => navigate("/")*/);
   }
   function FilterbyCategory(event) {
-    console.log(event.target.value, "event.target.value");
     setCurrentFilter(event.target.value);
     fetchForumThreadsByCategory(event.target.value);
   }
@@ -85,7 +81,6 @@ const ForumThreads = () => {
   //   }
   // }
  
-  console.log(user, "user999");
   function generateForumThreadHTML(forumThreads) {
     const allForumThread = forumThreads.map((forumThread, index) => (
       <div key={index} className="col-md-12 col-lg-12">
@@ -93,7 +88,7 @@ const ForumThreads = () => {
           {/* <img
           src={forumThread.image}
           className="card-img-top"
-          alt={`${recipe.title} image`}
+          alt={`${forumThread.title} image`}
         /> */}
           <div className="card-body">
             <h5 className="card-title">{forumThread.title}</h5>
@@ -153,7 +148,6 @@ const ForumThreads = () => {
                 id="category"
                 className="form-control"
                 required
-                // value={forumThread.category}
                 onChange={FilterbyCategory}
                 defaultValue="All"
               >

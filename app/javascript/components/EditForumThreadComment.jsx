@@ -55,7 +55,6 @@ const EditForumThreadComment = () => {
       .then((response) => setForumThreadComment(response))
       .catch();
   }, []);
-  console.log( "forumThread3");
 
   const handleChange = (e) => {
     setForumThreadComment({
@@ -66,7 +65,6 @@ const EditForumThreadComment = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(forumThreadComment.forum_thread_id, "forumThreadCommentContent22");
     const url = `/api/v1/forum_thread_comments/update/${params.id}`;
     if (forumThreadComment.body.length == 0) return;
     const forumThreadCommentContent = {

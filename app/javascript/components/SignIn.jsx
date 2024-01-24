@@ -11,33 +11,18 @@ const SignIn = () => {
   const { token, setUser } = useContext(UserContext);
 
   const [isUserCreated, setIsUserCreated] = useState("");
-
-  // console.log("sds",typeof(user),typeof(setUser), "user")
-  // console.log("user",user)
-
-  // r)
   const onChange = (event, setFunction) => {
     setFunction(event.target.value);
   };
-
   const onSubmit = (event) => {
     event.preventDefault();
     const url = "/api/v1/users/create";
-
     if (username.length == 0) return;
-
     const signInContent = {
       username,
     };
-    // console.log(token, "token")
     if (user === null) {
     }
-    // console.log("user",user)
-
-    // console.log(token, "token")
-
-    console.log(signInContent, "signInContent");
-
     fetch("/login", {
       method: "POST",
       headers: {
@@ -50,11 +35,8 @@ const SignIn = () => {
         if (data.error) {
           alert("user does not exists");
         }
-        console.log(data, "  data");
         localStorage.setItem("token", data.token);
         setUser(data.user);
-        console.log(data.token, "token");
-        console.log(data.user, "user");
         navigate(`/forumThreads`);
       });
   };

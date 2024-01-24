@@ -65,7 +65,6 @@ function ResponsiveAppBar() {
     }
     
   }
-  //   console.log(displayLoginStatus());
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null

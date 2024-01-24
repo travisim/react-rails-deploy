@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import { UserContext, AllUsersContext } from "./App";
-// import LongMenu from "./MaxHeightMenu";
 import TimeAgo from "react-timeago";
 
 const ForumThread = () => {
@@ -12,11 +11,8 @@ const ForumThread = () => {
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
   const [allUsers, setAllUsers] = useState([]);
-
   const [textFieldValue, setTextFieldValue] = useState("");
-
   const [forumThreadComments, setForumThreadComments] = useState([]);
-  // const [deleted, setDeleted] = useState(1);
 
   useEffect(() => {
     const url = "/api/v1/users/index";
@@ -53,7 +49,6 @@ const ForumThread = () => {
   const deleteForumThread = () => {
     const url = `/api/v1/forum_thread/destroy/${params.id}`;
     const token = document.querySelector('meta[name="csrf-token"]').content;
-
     fetch(url, {
       method: "DELETE",
       headers: {
@@ -73,7 +68,6 @@ const ForumThread = () => {
   const deleteForumThreadComments = (id) => {
     const url = `/api/v1/forum_thread_comments/destroy/${id}`;
     const token = document.querySelector('meta[name="csrf-token"]').content;
-    // setDeleted(deleted+1);
     fetch(url, {
       method: "DELETE",
       headers: {
@@ -93,6 +87,7 @@ const ForumThread = () => {
   };
   const forumThreadBody = addHtmlEntities(forumThread.body);
   function AccessControlComments(forumThreadCommentID) {
+    if (user == null) return;
     if (user.id == forumThreadCommentID) {
       return    (<div>
         <div className="btn-group mr-2" role="group">
@@ -108,7 +103,6 @@ const ForumThread = () => {
             type="button"
             className="btn btn-danger "
             onClick={(event) => {
-              // deleteForumThreadComment();
               const id = forumThreadComments.id;
               deleteForumThreadComments(id);
             }}
@@ -121,8 +115,6 @@ const ForumThread = () => {
   }
   function AccessControlThread(forumThreadID) {
     if (user == null) return;
-    console.log(forumThreadID, "forumThreadID")
-    console.log(user.id, "user.id")
     if (user.id == forumThreadID) {
       return (
         <div><button
@@ -142,9 +134,6 @@ const ForumThread = () => {
     }
   }
   function generateForumThreadCommentsHTML(forumThreadComments) {
-    // if (allUsers == null) {
-    //   return;
-    // }
     const allForumThreadComments = forumThreadComments.map(
       (forumThreadComments, index) => (
         <div key={index} className="">
@@ -165,7 +154,6 @@ const ForumThread = () => {
               style={{ width: "18rem" }}
             >
               { AccessControlComments(forumThreadComments.user_id)}
-              {/* <LongMenu/> */}
             </div>
           </div>
         </div>
@@ -232,8 +220,6 @@ const ForumThread = () => {
       forum_thread_id: params.id,
     };
 
-    console.log("body", body);
-    console.log(forumThreadCommentContent.body, "forumThreadCommentContent");
     fetch(url, {
       method: "POST",
       headers: {
@@ -253,8 +239,6 @@ const ForumThread = () => {
       .then()
       .catch((error) => console.log(error.message));
   };
-  console.log(allUsers, "allUsers");
-  console.log(forumThreadComments, "forumThreadComments");
   return (
     <div className="">
       <div className="hero position-relative d-flex flex-column align-items-center justify-content-center">
