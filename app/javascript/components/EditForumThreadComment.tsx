@@ -1,48 +1,27 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import { UserContext } from "./App";
 
 const EditForumThreadComment = () => {
   const params = useParams();
-
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Question");
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
-  const [forumThreadComment, setForumThreadComment] = useState([]);
-
-  const stripHtmlEntities = (str) => {
+  const [forumThreadComment, setForumThreadComment] = useState<any[]>([]);
+  
+  const stripHtmlEntities = (str: string): string => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   };
-
-  const onChange = (event, setFunction) => {
+  
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: React.Dispatch<React.SetStateAction<string>>) => {
     setFunction(event.target.value);
   };
-
-  // function fetchComment() {
-  //   const url = `/api/v1/forum_thread_comments/show/${params.id}`;
-  //   fetch(url)
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         console.log(res, "res");
-  //         return res.json();
-  //       }
-  //       throw new Error("Network response was not ok.");
-  //     })
-  //     .then((res) => {
-  //       setForumThreadComment(res);
-  //       console.log(res, "res");
-
-  //       // console.log("running", deleted);
-  //     })
-  //     .catch(/*() => navigate("/")*/);
-  // }
-
+  
   useEffect(() => {
     const url = `/api/v1/forum_thread_comments/show/${params.id}`;
     fetch(url)
@@ -55,22 +34,21 @@ const EditForumThreadComment = () => {
       .then((response) => setForumThreadComment(response))
       .catch();
   }, []);
-
-  const handleChange = (e) => {
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForumThreadComment({
       ...forumThreadComment,
       [e.target.name]: e.target.value,
     });
   };
-
-  const onSubmit = (event) => {
+  
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const url = `/api/v1/forum_thread_comments/update/${params.id}`;
     if (forumThreadComment.body.length == 0) return;
     const forumThreadCommentContent = {
       body: stripHtmlEntities(forumThreadComment.body),
     };
-
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
       method: "PUT",
@@ -89,7 +67,7 @@ const EditForumThreadComment = () => {
       .then(()=>navigate(`/forumThread/${forumThreadComment.forum_thread_id}` ))
       .catch((error) => console.log(error.message));
   };
-
+  
   return (
     <div className="container mt-5">
       <div className="row">
@@ -102,7 +80,7 @@ const EditForumThreadComment = () => {
               className="form-control"
               id="body"
               name="body"
-              rows="5"
+              rows={5}
               required
               onChange={handleChange}
             />

@@ -1,24 +1,25 @@
-import React, { useEffect, useState, useContext,createContext } from "react";
+import React, { useEffect, useState, useContext, createContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  const [token, setToken] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [token, setToken] = useState<string>("");
   const { user, setUser } = useContext(UserContext);
-  
-  const onChange = (event, setFunction) => {
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: React.Dispatch<React.SetStateAction<string>>) => {
     setFunction(event.target.value);
   };
-  const onSubmit = (event) => {
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const url = "/api/v1/users/create";
-    if (username.length == 0) return;
+    if (username.length === 0) return;
     const signInContent = {
       username
     };
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
     fetch(url, {
       method: "POST",
       headers: {
@@ -29,21 +30,21 @@ const SignUp = () => {
     })
       .then((response) => {
         if (response.ok) {
-        return response.json();
-        }
-        else {
-          alert("Username already exists")
-
+          return response.json();
+        } else {
+          alert("Username already exists");
         }
         throw new Error("Network response was not ok.");
-      
-    })
-      .then((response) => {
-        navigate(`/forumThreads`)
       })
-    .catch((error) => console.log(error.message));
+      .then((response) => {
+        navigate(`/forumThreads`);
+      })
+      .catch((error) => console.log(error.message));
   };
-    return (
+
+  return (
+
+
     <div className="container mt-5">
       <div className="row">
           <div className="col-sm-12 col-lg-6 offset-lg-3">

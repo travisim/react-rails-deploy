@@ -22,12 +22,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_23_221712) do
   end
 
   create_table "forum_thread_comments", force: :cascade do |t|
-    t.text "body"
+    t.text "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.bigint "forum_thread_id", null: false
-    t.string "author"
+    t.string "author", null: false
     t.index ["forum_thread_id"], name: "index_forum_thread_comments_on_forum_thread_id"
     t.index ["user_id"], name: "index_forum_thread_comments_on_user_id"
   end
@@ -39,12 +39,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_23_221712) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.string "author"
+    t.string "author", null: false
     t.index ["user_id"], name: "index_forum_threads_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
+    t.string "username", null: false,
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

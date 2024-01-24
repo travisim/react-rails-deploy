@@ -2,78 +2,75 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 import TimeAgo from "react-timeago";
-const ForumThreads = () => {
+
+const ForumThreads = (): JSX.Element => {
   const navigate = useNavigate();
-  const [forumThreads, setForumThreads] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState("All");
+  const [forumThreads, setForumThreads] = useState<ForumThread[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [currentFilter, setCurrentFilter] = useState<string>("All");
   const { user, setUser } = useContext(UserContext);
+
   useEffect(() => {
     const url = "/api/v1/users/index";
     fetch(url)
-      .then(res => {
+      .then((res) => {
         if (res.ok) {
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then(res => setAllUsers(res))
+      .then((res) => setAllUsers(res))
       .catch(() => navigate("/"));
   }, []);
+
   const NoForumThreadHTML = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>No Forum Threads In This Category yet.</h4>
     </div>
   );
-  function ForumThreadDeterminer(forumThread) {
+
+  function ForumThreadDeterminer(forumThread: ForumThread[]): JSX.Element {
     if (forumThread.length > 0) {
       return generateForumThreadHTML(forumThread);
     } else {
       return NoForumThreadHTML;
     }
   }
+
   useEffect(() => {
     const url = "/api/v1/forum_thread/index";
     fetch(url)
-      .then(res => {
+      .then((res) => {
         if (res.ok) {
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then(res => setForumThreads(ForumThreadDeterminer(res)))
+      .then((res) => setForumThreads(ForumThreadDeterminer(res)))
       .catch(() => navigate("/"));
   }, []);
-  function fetchForumThreadsByCategory(category) {
+
+  function fetchForumThreadsByCategory(category: string): void {
     const url = `/api/v1/forum_thread/showForumThreadsByCategory/${category}`;
     fetch(url)
-      .then(res => {
+      .then((res) => {
         if (res.ok) {
           return res.json();
         }
         throw new Error("Network response was not ok.");
       })
-      .then(res => {
+      .then((res) => {
         setForumThreads(ForumThreadDeterminer(res));
       })
       .catch();
   }
-  function FilterbyCategory(event) {
+
+  function FilterbyCategory(event: React.ChangeEvent<HTMLSelectElement>): void {
     setCurrentFilter(event.target.value);
     fetchForumThreadsByCategory(event.target.value);
   }
-  // function AccessControlThreads(forumThreadUserID) {
-  //   console.log(user.id, "user.id");
-  //   if (user.id == forumThreadUserID) {
-  //     return (<Link
-  //       to={`/editForumThread/${forumThread.id}`}
-  //       className="btn custom-button"
-  //     >
-  //       Edit
-  //     </Link>);
-  //   }
-  // }
-  function generateForumThreadHTML(forumThreads) {
+
+  function generateForumThreadHTML(forumThreads: ForumThread[]): JSX.Element[] {
     const allForumThread = forumThreads.map((forumThread, index) => (
       <div key={index} className="col-md-12 col-lg-12">
         <div className="card mb-4">
@@ -81,14 +78,9 @@ const ForumThreads = () => {
             <h5 className="card-title">{forumThread.title}</h5>
             <h6 className="card-title">{forumThread.category}</h6>
             <p className="card-subtitle mb-2 text-muted">
-              Posted by {forumThread.author}{" "}
-              <TimeAgo date={forumThread.created_at} />{" "}
+              Posted by {forumThread.author} <TimeAgo date={forumThread.created_at} />{" "}
             </p>
-
-            <Link
-              to={`/forumThread/${forumThread.id}`}
-              className="btn custom-button"
-            >
+            <Link to={`/forumThread/${forumThread.id}`} className="btn custom-button">
               View Thread
             </Link>
           </div>
@@ -97,6 +89,7 @@ const ForumThreads = () => {
     ));
     return allForumThread;
   }
+
   const noForumThread = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>
@@ -104,6 +97,7 @@ const ForumThreads = () => {
       </h4>
     </div>
   );
+
   return (
     <>
       <section className="jumbotron jumbotron-fluid text-center">
@@ -148,4 +142,5 @@ const ForumThreads = () => {
     </>
   );
 };
+
 export default ForumThreads;

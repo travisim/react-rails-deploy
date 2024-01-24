@@ -4,15 +4,32 @@ import TextField from "@mui/material/TextField";
 import { UserContext, AllUsersContext } from "./App";
 import TimeAgo from "react-timeago";
 
-const ForumThread = () => {
+interface ForumThread {
+  title: string;
+  body: string;
+  category: string;
+  author: string;
+  user_id: number;
+  created_at: string;
+}
+
+interface ForumThreadComment {
+  id: number;
+  body: string;
+  author: string;
+  user_id: number;
+  created_at: string;
+}
+
+const ForumThread = (): JSX.Element => {
   const params = useParams();
   const navigate = useNavigate();
-  const [forumThread, setForumThread] = useState({ title: "" });
+  const [forumThread, setForumThread] = useState<ForumThread>({ title: "", body: "", category: "", author: "", user_id: 0, created_at: "" });
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState<any[]>([]);
   const [textFieldValue, setTextFieldValue] = useState("");
-  const [forumThreadComments, setForumThreadComments] = useState([]);
+  const [forumThreadComments, setForumThreadComments] = useState<ForumThreadComment[]>([]);
 
   useEffect(() => {
     const url = "/api/v1/users/index";
@@ -28,6 +45,7 @@ const ForumThread = () => {
       })
       .catch(() => navigate("/"));
   }, []);
+
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;
     fetch(url)
@@ -43,10 +61,11 @@ const ForumThread = () => {
 
   const token = document.querySelector('meta[name="csrf-token"]').content;
 
-  const addHtmlEntities = (str) => {
+  const addHtmlEntities = (str: string): string => {
     return String(str).replace(/&lt;/g, "<").replace(/&gt;/g, ">");
   };
-  const deleteForumThread = () => {
+
+  const deleteForumThread = (): void => {
     const url = `/api/v1/forum_thread/destroy/${params.id}`;
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -65,7 +84,8 @@ const ForumThread = () => {
       .then(() => navigate("/forumThreads"))
       .catch((error) => console.log(error.message));
   };
-  const deleteForumThreadComments = (id) => {
+
+  const deleteForumThreadComments = (id: number): void => {
     const url = `/api/v1/forum_thread_comments/destroy/${id}`;
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -85,61 +105,63 @@ const ForumThread = () => {
       .then(console.log("deleted id", id))
       .catch((error) => console.log(error.message));
   };
+
   const forumThreadBody = addHtmlEntities(forumThread.body);
-  function AccessControlComments(forumThreadCommentID) {
-    if (user == null) return;
+
+  const AccessControlComments = (forumThreadCommentID: number): JSX.Element | null => {
+    if (user == null) return null;
     if (user.id == forumThreadCommentID) {
-      return    (<div>
-        <div className="btn-group mr-2" role="group">
-          <Link
-            to={`/editForumThreadComment/${forumThreadComments.id}`}
-            className="btn custom-button"
-          >
+      return (
+        <div>
+          <div className="btn-group mr-2" role="group">
+            <Link
+              to={`/editForumThreadComment/${forumThreadComments.id}`}
+              className="btn custom-button"
+            >
+              Edit
+            </Link>
+          </div>
+          <div className="btn-group mr-2" role="group">
+            <button
+              type="button"
+              className="btn btn-danger "
+              onClick={(event) => {
+                const id = forumThreadComments.id;
+                deleteForumThreadComments(id);
+              }}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const AccessControlThread = (forumThreadID: number): JSX.Element | null => {
+    if (user == null) return null;
+    if (user.id == forumThreadID) {
+      return (
+        <div>
+          <button type="button" className="btn btn-danger" onClick={deleteForumThread}>
+            Delete thread
+          </button>
+          <Link to={`/editForumThread/${forumThread.id}`} className="btn custom-button">
             Edit
           </Link>
         </div>
-        <div className="btn-group mr-2" role="group">
-          <button
-            type="button"
-            className="btn btn-danger "
-            onClick={(event) => {
-              const id = forumThreadComments.id;
-              deleteForumThreadComments(id);
-            }}
-          >
-            Delete
-          </button>
-        </div>
-      </div>)
+      );
     }
-  }
-  function AccessControlThread(forumThreadID) {
-    if (user == null) return;
-    if (user.id == forumThreadID) {
-      return (
-        <div><button
-        type="button"
-        className="btn btn-danger"
-        onClick={deleteForumThread}
-      >
-        Delete thread
-      </button>
-        <Link
-        to={`/editForumThread/${forumThread.id}`}
-        className="btn custom-button"
-      >
-        Edit
-      </Link></div>);
-  
-    }
-  }
-  function generateForumThreadCommentsHTML(forumThreadComments) {
+    return null;
+  };
+
+  const generateForumThreadCommentsHTML = (forumThreadComments: ForumThreadComment[]): JSX.Element[] => {
     const allForumThreadComments = forumThreadComments.map(
       (forumThreadComments, index) => (
         <div key={index} className="">
           <div className="card mb-4">
             <div className="card-body  col-lg-10">
-              {/* <div className="col-sm-12 col-lg-7"> */}
               <h4
                 className="card-text"
                 dangerouslySetInnerHTML={{
@@ -153,31 +175,32 @@ const ForumThread = () => {
               className="card-body  text-right  btn-toolbar "
               style={{ width: "18rem" }}
             >
-              { AccessControlComments(forumThreadComments.user_id)}
+              {AccessControlComments(forumThreadComments.user_id)}
             </div>
           </div>
         </div>
       )
     );
     return allForumThreadComments;
-  }
+  };
+
   const NoForumThreadCommentsHTML = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
       <h4>
-        No Comments yet, why not{" "}
-        <Link to="/newForumThreadComments">create one</Link>
+        No Comments yet, why not <Link to="/newForumThreadComments">create one</Link>
       </h4>
     </div>
   );
-  function ForumThreadCommentsDeterminer(forumThreadComments) {
+
+  const ForumThreadCommentsDeterminer = (forumThreadComments: ForumThreadComment[]): JSX.Element => {
     if (forumThreadComments.length > 0) {
       return generateForumThreadCommentsHTML(forumThreadComments);
     } else {
       return NoForumThreadCommentsHTML;
     }
-  }
+  };
 
-  function fetchCommentsForThread() {
+  const fetchCommentsForThread = (): void => {
     const url = `/api/v1/forum_thread_comments/showCommentsForThread/${params.id}`;
     fetch(url)
       .then((res) => {
@@ -188,38 +211,36 @@ const ForumThread = () => {
       })
       .then((res) => {
         setForumThreadComments(res);
-
       })
       .catch(/*() => navigate("/")*/);
-  }
+  };
+
   useEffect(() => {
     fetchCommentsForThread();
   }, []);
-  const stripHtmlEntities = (str) => {
+
+  const stripHtmlEntities = (str: string): string => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   };
 
-  const onChange = (event, setFunction) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: Function): void => {
     setFunction(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+    const forumThreadCommentContent = {
+      body: stripHtmlEntities(body),
+      author: user.username,
+      user_id: user.id,
+      forum_thread_id: params.id,
+    };
     setBody("");
     event.preventDefault();
     const url = "/api/v1/forum_thread_comments/create";
     if (body.length == 0) return;
-
-    const forumThreadCommentContent = {
-      body: stripHtmlEntities(body),
-      author: user.username,
-
-      user_id: user.id,
-      forum_thread_id: params.id,
-    };
-
     fetch(url, {
       method: "POST",
       headers: {
@@ -231,7 +252,6 @@ const ForumThread = () => {
       .then((response) => {
         if (response.ok) {
           fetchCommentsForThread();
-
           return response.json();
         }
         throw new Error("Network response was not ok.");
@@ -239,16 +259,13 @@ const ForumThread = () => {
       .then()
       .catch((error) => console.log(error.message));
   };
+
   return (
     <div className="">
       <div className="hero position-relative d-flex flex-column align-items-center justify-content-center">
         <div className="overlay bg-dark position-absolute" />
-        <h1 className="display-4 position-relative text-white">
-          {forumThread.title}
-        </h1>
-        <h4 className=" position-relative text-white">
-          {forumThread.category}
-        </h4>
+        <h1 className="display-4 position-relative text-white">{forumThread.title}</h1>
+        <h4 className=" position-relative text-white">{forumThread.category}</h4>
         <h4 className=" position-relative text-white">{forumThread.author}</h4>
         <div
           className=" position-relative text-white"
@@ -257,13 +274,9 @@ const ForumThread = () => {
           }}
         />
       </div>
-
       <div className="container py-5">
         <div className="row">
-          <div className="col-sm-12 col-lg-7">
-            {/* <h5 className="mb-2">Body</h5> */}
-          </div>
-
+          <div className="col-sm-12 col-lg-7"></div>
           <div className="row">
             <div className=" col-md-12 col-lg-12  mb-4">
               <form onSubmit={onSubmit}>
@@ -276,7 +289,6 @@ const ForumThread = () => {
                     multiline
                     rows={5}
                     className="card form-control"
-                    // defaultValue="Add Comments"
                     onChange={(event) => onChange(event, setBody)}
                   />
                   <button
@@ -287,18 +299,11 @@ const ForumThread = () => {
                   </button>
                 </div>
               </form>
-              {/* <h5 className="card-title">{forumThreadComments.body}</h5> */}
             </div>
           </div>
-          <div className="row">
-            {ForumThreadCommentsDeterminer(forumThreadComments)}
-          </div>
-
-          <div className="col-sm-12 col-lg-2">
-            { AccessControlThread(forumThread.user_id)}
-          </div>
+          <div className="row">{ForumThreadCommentsDeterminer(forumThreadComments)}</div>
+          <div className="col-sm-12 col-lg-2">{AccessControlThread(forumThread.user_id)}</div>
         </div>
-
         <Link to="/forumThreads" className="btn custom-button ">
           Back to threads
         </Link>
@@ -308,3 +313,5 @@ const ForumThread = () => {
 };
 
 export default ForumThread;
+
+

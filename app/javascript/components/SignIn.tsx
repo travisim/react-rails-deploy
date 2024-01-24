@@ -5,24 +5,26 @@ import { TokenContext } from "./App";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
-  // const [token, setToken] = useState("");
+  const [username, setUsername] = useState<string>("");
   const { user, setToken } = useContext(TokenContext);
   const { token, setUser } = useContext(UserContext);
-  console.log(useContext(TokenContext),"token context")
-console.log("hihihihi")
-  const [isUserCreated, setIsUserCreated] = useState("");
-  const onChange = (event, setFunction) => {
+  console.log(useContext(TokenContext), "token context");
+  console.log("hihihihi");
+  const [isUserCreated, setIsUserCreated] = useState<string>("");
+  
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: React.Dispatch<React.SetStateAction<string>>) => {
     setFunction(event.target.value);
   };
-  const onSubmit = (event) => {
+  
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const url = "/api/v1/users/create";
-    if (username.length == 0) return;
+    if (username.length === 0) return;
     const signInContent = {
       username,
     };
     if (user === null) {
+      // do something
     }
     fetch("/login", {
       method: "POST",
@@ -41,6 +43,7 @@ console.log("hihihihi")
         navigate(`/forumThreads`);
       });
   };
+  
   return (
     <div className="container mt-5">
       <div className="row">

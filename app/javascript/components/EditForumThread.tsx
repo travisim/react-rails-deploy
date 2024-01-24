@@ -1,23 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 import { UserContext } from "./App";
 
-const EditForumThread = () => {
-  const params = useParams();
+interface ForumThread {
+  title: string;
+  category: string;
+  body: string;
+}
 
+const EditForumThread: React.FC = () => {
+  const params = useParams();
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-  const [forumThread, setForumThread] = useState([]);
+  const [forumThread, setForumThread] = useState<ForumThread>({
+    title: "",
+    category: "",
+    body: "",
+  });
 
-  const stripHtmlEntities = (str) => {
+  const stripHtmlEntities = (str: string): string => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   };
 
-  const onChange = (event, setFunction) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: React.Dispatch<React.SetStateAction<string>>): void => {
     setFunction(event.target.value);
   };
 
@@ -34,30 +42,28 @@ const EditForumThread = () => {
       .catch();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setForumThread({
       ...forumThread,
       [e.target.name]: e.target.value,
     });
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
     const url = `/api/v1/forum_thread/update/${params.id}`;
     if (
-      forumThread.title.length == 0 ||
-      forumThread.category.length == 0 ||
-      forumThread.body.length == 0
+      forumThread.title.length === 0 ||
+      forumThread.category.length === 0 ||
+      forumThread.body.length === 0
     )
       return;
-
     const forumThreadContent = {
       title: forumThread.title,
       category: forumThread.category,
       body: stripHtmlEntities(forumThread.body),
       // user_id: user.id,
     };
-
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
       method: "PUT",
@@ -121,17 +127,15 @@ const EditForumThread = () => {
                 className="form-control"
                 id="body"
                 name="body"
-                rows="5"
+                rows={5}
                 required
                 value={forumThread.body}
                 onChange={handleChange}
               />
             </div>
-
             <button type="submit" className="btn custom-button mt-3">
               Create Recipe
             </button>
-
             <Link to="/forumThreads" className="btn custom-button mt-3 ">
               Back to threads
             </Link>
@@ -143,3 +147,5 @@ const EditForumThread = () => {
 };
 
 export default EditForumThread;
+
+
