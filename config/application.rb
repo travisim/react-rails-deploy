@@ -20,6 +20,7 @@ Bundler.require(*Rails.groups)
 
 module RailsReactForum
   class Application < Rails::Application
+          
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
@@ -38,5 +39,7 @@ module RailsReactForum
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    # config.autoload_paths << “#{Rails.root}/lib”
+    
   end
 end

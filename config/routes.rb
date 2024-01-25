@@ -8,10 +8,24 @@ Rails.application.routes.draw do
 
       get 'forum_thread/index'
       post 'forum_thread/create'
-      get '/show/:id', to: 'forum_thread#show'
-      delete '/destroy/:id', to: 'forum_thread#destroy'
+      get 'forum_thread/show/:id', to: 'forum_thread#show'
+      delete 'forum_thread/destroy/:id', to: 'forum_thread#destroy'
+      get 'forum_thread/showForumThreadsByCategory/:category', to: 'forum_thread#showForumThreadsByCategory'
+      put 'forum_thread/update/:id', to: 'forum_thread#update'
+
+
+      get 'forum_thread_comments/index'
+      post 'forum_thread_comments/create'
+      get 'forum_thread_comments/showCommentsForThread/:forum_thread_id', to: 'forum_thread_comments#showCommentsForThread'
+      
+      put 'forum_thread_comments/update/:id', to: 'forum_thread_comments#update'
+
+      get 'forum_thread_comments/show/:id', to: 'forum_thread_comments#show'
+      delete 'forum_thread_comments/destroy/:id', to: 'forum_thread_comments#destroy'
     end
-  end
+  end 
+  post"/login", to: "users#login"
+  get "/login", to: "users#token_authenticate"
   root 'homepage#index'
   get '/*path' => 'homepage#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

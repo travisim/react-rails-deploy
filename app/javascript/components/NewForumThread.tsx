@@ -1,36 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "./App";
 
 const NewForumThread = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Question");
   const [body, setBody] = useState("");
+  const { user, setUser } = useContext(UserContext);
 
-
-  const stripHtmlEntities = (str) => {
+  const stripHtmlEntities = (str:string) => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   };
 
-  const onChange = (event, setFunction) => {
+  const onChange = (event: React.FormEvent<HTMLFormElement>, setFunction) => {
     setFunction(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const url = "/api/v1/forum_thread/create";
-
-    if (title.length == 0 || body.length == 0,category.length == 0) return;
-
+    if ((title.length == 0 || body.length == 0, category.length == 0)) return;
     const forumThreadContent = {
       title,
       category,
       body: stripHtmlEntities(body),
+      author: user.username,
+      user_id: user.id,
     };
-    
 
     const token = document.querySelector('meta[name="csrf-token"]').content;
     fetch(url, {
@@ -47,7 +47,7 @@ const NewForumThread = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => navigate(`/forum_thread/${response.id}`))
+      .then((response) => navigate(`/forumThread/${response.id}`))
       .catch((error) => console.log(error.message));
   };
 
@@ -56,11 +56,11 @@ const NewForumThread = () => {
       <div className="row">
         <div className="col-sm-12 col-lg-6 offset-lg-3">
           <h1 className="font-weight-normal mb-5">
-            Add a new recipe to our awesome recipe collection.
+            Add a new Thread
           </h1>
           <form onSubmit={onSubmit}>
             <div className="form-group">
-              <label htmlFor="title">Recipe name</label>
+              <label htmlFor="title">Thread Title</label>
               <input
                 type="text"
                 name="name"
@@ -71,15 +71,23 @@ const NewForumThread = () => {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="category">category name</label>
-              <input
-                type="text"
-                name="name"
-                id="category"
-                className="form-control"
-                required
-                onChange={(event) => onChange(event, setCategory)}
-              />
+              <label htmlFor="category">
+                category name
+                <select
+                  type="text"
+                  name="name"
+                  id="category"
+                  className="form-control"
+                  required
+                  onChange={(event) => onChange(event, setCategory)}
+                  defaultValue="Question"
+                >
+                  <option value="Question">Question</option>
+                  <option value="Discussion">Discussion</option>
+                  <option value="Off-Advice">Off-Advice</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
             </div>
 
             <label htmlFor="body">Preparation Instructions</label>
@@ -92,10 +100,11 @@ const NewForumThread = () => {
               onChange={(event) => onChange(event, setBody)}
             />
             <button type="submit" className="btn custom-button mt-3">
-              Create Recipe
+              Create Thread
             </button>
-            <Link to="/forumThreads" className="btn btn-link mt-3">
-              Back to recipes
+
+            <Link to="/forumThreads" className="btn custom-button mt-3 ">
+              Back to threads
             </Link>
           </form>
         </div>

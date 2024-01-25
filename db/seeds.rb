@@ -7,20 +7,60 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-9.times do |i|
+1.times do |i|
   User.create(
     
-   username: "name #{i+2}",
+   username: "Frank"
 
   
   )
-end
-9.times do |i|
+  10.times do |j|
     ForumThread.create(
-      title: "title #{i + 1}",
-      body: 'hi, bonjour, hola, ciao, hallo, namaste, salaam, zdras-tvuy-te, ohayo, marhaba, ni hao, shalom, goddag, ahoj, annyeong, bom dia, sveiki, merhaba, selamat pagi, selamat siang, selamat sore, selamat malam, selamat petang, selamat tidur, selamat beristirahat, selamat jalan, selamat datang, selamat tinggal, selamat makan, selamat bersenang-senang, selamat bersantai, selamat berlibur, selamat berjuang, selamat bekerja, selamat beraktivitas, selamat berolahraga, selamat bermain, selamat berpesta, selamat berpesta pora, selamat berpesta kembang api, selamat berpesta minum-minuman keras, selamat berpesta narkoba, selamat berpesta seks bebas, selamat berpesta seks bebas tanpa kondom, selamat berpesta seks bebas tanpa kondom dan KB, selamat berpesta seks bebas tanpa kondom, KB, dan suntik HIV, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, dan kematian, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, dan neraka, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, dan siksaan, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, dan kekal, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, kekal, dan keabadian, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, kekal, keabadian, dan kekal abadian, selamat berpesta seks bebas tanpa kondom, KB, suntik HIV, kematian, neraka, siksaan, kekal, keabadian',
-    category:"jokes,stories,news,memes,other",
-    # author: "author #{i + 1}",
+      title: ["Which Courses should i S/U?", "Where to go For SEP?", "Which degree is right for me?","Which hall to choose?"].sample,
+      body: ["I have been considering these few choices but i have no idea, perhaps you could enlighten me?", "I have done much research but have yet to come to a conclusion, Please help me"].sample,
+    category:["Question","Discussion","Off-Advice","Others"].sample,
+    author: "Frank",
     user_id: 1
     )
+    
+  end
+  10.times do |j|
+    ForumThreadComment.create(
+      
+      body: ["Google is your best friend", "Read the FAQ", "Ask your seniors", "Ask your friends"].sample,
+      author: "Frank",
+    forum_thread_id: Random.rand(10)+1,
+    user_id: 1
+    
+    )
+  end
+end
+
+1.times do |i|
+  User.create(
+    
+   username: "dean"
+
+  
+  )
+  10.times do |j|
+    ForumThread.create(
+      title: ["Which Courses should i S/U?", "Where to go For SEP?", "Which degree is right for me?","Which hall to choose?"].sample,
+      body: ["I have been considering these few choices but i have no idea, perhaps you could enlighten me?", "I have done much research but have yet to come to a conclusion, Please help me"].sample,
+    category:["Question","Discussion","Off-Advice","Others"].sample,
+    author: "dean",
+    user_id: 2
+    )
+    
+  end
+  10.times do |j|
+    ForumThreadComment.create(
+      
+      body: ["Google is your best friend", "Read the FAQ", "Ask your seniors", "Ask your friends"].sample,
+      author: "dean",
+    forum_thread_id: Random.rand(10)+1,
+    user_id: 2
+    
+    )
+  end
 end
