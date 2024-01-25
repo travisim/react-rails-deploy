@@ -72,7 +72,7 @@ const NewForumThread = () => {
             </div>
             <div className="form-group">
               <label htmlFor="category">
-                category name
+              Category name
                 <select
                   type="text"
                   name="name"
@@ -90,7 +90,7 @@ const NewForumThread = () => {
               </label>
             </div>
 
-            <label htmlFor="body">Preparation Instructions</label>
+            <label htmlFor="body"> body</label>
             <textarea
               className="form-control"
               id="body"
