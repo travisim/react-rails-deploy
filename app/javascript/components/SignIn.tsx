@@ -1,15 +1,11 @@
 import React, { useEffect, useState, useContext, createContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
-import { TokenContext } from "./App";
 
 const SignIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
-  const { user, setToken } = useContext(TokenContext);
-  const { token, setUser } = useContext(UserContext);
-  console.log(useContext(TokenContext), "token context");
-  console.log("hihihihi");
+  const { user, setUser } = useContext(UserContext);
   const [isUserCreated, setIsUserCreated] = useState<string>("");
   
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: React.Dispatch<React.SetStateAction<string>>) => {

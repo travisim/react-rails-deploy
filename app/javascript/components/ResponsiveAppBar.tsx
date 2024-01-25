@@ -65,6 +65,7 @@ function ResponsiveAppBar() {
     }
     
   }
+  //   console.log(displayLoginStatus());
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -186,14 +187,10 @@ function ResponsiveAppBar() {
           </Box>
           {displaySignInOutbuttons()}
           <Box>
-            <MenuItem
-              // key={page}
-              // onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: "white", display: "block" }}
-              uppercase='false'
-            >
+           
+           
               {displayLoginStatus()}
-            </MenuItem>
+            
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

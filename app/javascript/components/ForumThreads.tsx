@@ -6,22 +6,9 @@ import TimeAgo from "react-timeago";
 const ForumThreads = (): JSX.Element => {
   const navigate = useNavigate();
   const [forumThreads, setForumThreads] = useState<ForumThread[]>([]);
-  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [currentFilter, setCurrentFilter] = useState<string>("All");
   const { user, setUser } = useContext(UserContext);
 
-  useEffect(() => {
-    const url = "/api/v1/users/index";
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then((res) => setAllUsers(res))
-      .catch(() => navigate("/"));
-  }, []);
 
   const NoForumThreadHTML = (
     <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">

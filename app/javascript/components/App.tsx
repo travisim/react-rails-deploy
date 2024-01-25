@@ -11,14 +11,17 @@ import ResponsiveAppBar from "./ResponsiveAppBar";
 import EditForumThreadComment from "./EditForumThreadComment";
 import EditForumThread from "./EditForumThread";
 
-export const UserContext = createContext<null | { user: any, setUser: React.Dispatch<React.SetStateAction<any>> }>(null);
-export const TokenContext = createContext<null | { token: any, setToken: React.Dispatch<React.SetStateAction<any>> }>(null);
-export const AllUsersContext = createContext<null | { allUsers: any, setAllUsers: React.Dispatch<React.SetStateAction<any>> }>(null);
+
+interface User {
+  id: number;
+  username: string;
+  created_at: string;
+  updated_at: string;
+}
+export const UserContext = createContext<null | { user: User, setUser: React.Dispatch<React.SetStateAction<User>> }>(null);
 
 const App = () => {
-  const [user, setUser] = useState<null | any>(null);
-  const [token, setToken] = useState<null | any>(null);
-  const [allUsers, setAllUsers] = useState<null | any>(null);
+  const [user, setUser] = useState<User | any>(null);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -32,20 +35,7 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    const url = "/api/v1/users/index";
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then((res) => {
-        setAllUsers(res);
-      })
-      .catch(() => navigate("/"));
-  }, []);
+ 
 
   function handleLogout() {
     setUser(null);
@@ -57,9 +47,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        <AllUsersContext.Provider value={{ allUsers: allUsers, setAllUsers: setAllUsers }}>
           <UserContext.Provider value={{ user: user, setUser: setUser }}>
-            <TokenContext.Provider value={{ token: token, setToken: setToken }}>
               <ResponsiveAppBar />
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -71,9 +59,7 @@ const App = () => {
                 <Route path="/signIn" element={<SignIn />} />
                 <Route path="/signUp" element={<SignUp />} />
               </Routes>
-            </TokenContext.Provider>
           </UserContext.Provider>
-        </AllUsersContext.Provider>
       </Router>
     </div>
   );

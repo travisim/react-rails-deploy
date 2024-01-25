@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import { UserContext, AllUsersContext } from "./App";
 import TimeAgo from "react-timeago";
-
+import { UserContext } from "./App";
 interface ForumThread {
   title: string;
   body: string;
@@ -19,32 +18,26 @@ interface ForumThreadComment {
   author: string;
   user_id: number;
   created_at: string;
+  
 }
 
+interface User {
+  id: number;
+  username: string;
+  created_at: string;
+  updated_at: string;
+}
+// {id: 2, username: 'dean', created_at: '2024-01-24T00:34:20.363Z', updated_at: '2024-01-24T00:34:20.363Z'}
 const ForumThread = (): JSX.Element => {
   const params = useParams();
   const navigate = useNavigate();
   const [forumThread, setForumThread] = useState<ForumThread>({ title: "", body: "", category: "", author: "", user_id: 0, created_at: "" });
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState<String >("");
   const { user, setUser } = useContext(UserContext);
-  const [allUsers, setAllUsers] = useState<any[]>([]);
-  const [textFieldValue, setTextFieldValue] = useState("");
+
   const [forumThreadComments, setForumThreadComments] = useState<ForumThreadComment[]>([]);
 
-  useEffect(() => {
-    const url = "/api/v1/users/index";
-    fetch(url)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      .then((res) => {
-        setAllUsers(res);
-      })
-      .catch(() => navigate("/"));
-  }, []);
+ 
 
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;

@@ -1,14 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { UserContext } from "./App";
 
 const EditForumThreadComment = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Question");
-  const [body, setBody] = useState("");
-  const { user, setUser } = useContext(UserContext);
   const [forumThreadComment, setForumThreadComment] = useState<any[]>([]);
   
   const stripHtmlEntities = (str: string): string => {

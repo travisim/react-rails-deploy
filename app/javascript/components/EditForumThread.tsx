@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { UserContext } from "./App";
 
 interface ForumThread {
   title: string;
@@ -8,10 +7,11 @@ interface ForumThread {
   body: string;
 }
 
+
+
 const EditForumThread: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
   const [forumThread, setForumThread] = useState<ForumThread>({
     title: "",
     category: "",
