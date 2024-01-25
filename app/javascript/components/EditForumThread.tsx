@@ -87,7 +87,7 @@ const EditForumThread: React.FC = () => {
     <div className="container mt-5">
       <div className="row">
         <div className="col-sm-12 col-lg-6 offset-lg-3">
-          <h1 className="font-weight-normal mb-5">Edit Post</h1>
+          <h1 className="font-weight-normal mb-5">Edit Thread</h1>
           <form onSubmit={onSubmit}>
             <div className="form-group">
               <label htmlFor="title">Thread Name</label>
@@ -103,7 +103,7 @@ const EditForumThread: React.FC = () => {
             </div>
             <div className="form-group">
               <label htmlFor="category">
-                category name
+                Category name
                 <select
                   type="text"
                   name="category"
@@ -122,7 +122,7 @@ const EditForumThread: React.FC = () => {
               </label>
             </div>
             <div className="form-group">
-              <label htmlFor="body">Preparation Instructions</label>
+              <label htmlFor="body">Body</label>
               <textarea
                 className="form-control"
                 id="body"
@@ -134,7 +134,7 @@ const EditForumThread: React.FC = () => {
               />
             </div>
             <button type="submit" className="btn custom-button mt-3">
-              Create Recipe
+              Edit Thread
             </button>
             <Link to="/forumThreads" className="btn custom-button mt-3 ">
               Back to threads
