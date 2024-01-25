@@ -4,9 +4,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 const EditForumThreadComment = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const [forumThreadComment, setForumThreadComment] = useState<any[]>([]);
+  const [forumThreadComment, setForumThreadComment] = useState<ForumThreadComment>({
+    id: 0,
+    body: "",
+  })
+
   
-  const stripHtmlEntities = (str: string): string => {
+  const stripHtmlEntities = (str) => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
       .replace(/</g, "&lt;")
@@ -26,7 +30,9 @@ const EditForumThreadComment = () => {
         }
         throw new Error("Network response was not ok.");
       })
-      .then((response) => setForumThreadComment(response))
+      .then((response) => {
+        setForumThreadComment(response);
+      console.log(forumThreadComment, "forumThreadComment")})
       .catch();
   }, []);
   

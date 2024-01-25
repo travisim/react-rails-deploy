@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import { UserContext, AllUsersContext } from "./App";
 import TimeAgo from "react-timeago";
-
+import { UserContext } from "./App";
 interface ForumThread {
   title: string;
   body: string;
@@ -33,12 +32,12 @@ const ForumThread = (): JSX.Element => {
   const params = useParams();
   const navigate = useNavigate();
   const [forumThread, setForumThread] = useState<ForumThread>({ title: "", body: "", category: "", author: "", user_id: 0, created_at: "" });
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState<String >("");
   const { user, setUser } = useContext(UserContext);
 
   const [forumThreadComments, setForumThreadComments] = useState<ForumThreadComment[]>([]);
 
-  console.log(body, "body");
+ 
 
   useEffect(() => {
     const url = `/api/v1/forum_thread/show/${params.id}`;
@@ -102,9 +101,11 @@ const ForumThread = (): JSX.Element => {
 
   const forumThreadBody = addHtmlEntities(forumThread.body);
 
-  const AccessControlComments = (forumThreadCommentUserID: number,forumThreadCommentID:number): JSX.Element | null => {
+  const AccessControlComments = (forumThreadCommentID: number): JSX.Element | null => {
+    console.log("forumThreadCommentID999", forumThreadCommentID);
+    console.log(user, "user")
     if (user == null) return null;
-    if (user.id == forumThreadCommentUserID) {
+    if (user.id == forumThreadCommentID) {
       return (
         <div>
           <div className="btn-group mr-2" role="group">
@@ -120,8 +121,7 @@ const ForumThread = (): JSX.Element => {
               type="button"
               className="btn btn-danger "
               onClick={(event) => {
-                const id = forumThreadCommentID;
-                deleteForumThreadComments(id);
+                deleteForumThreadComments(forumThreadCommentID);
               }}
             >
               Delete
@@ -134,7 +134,9 @@ const ForumThread = (): JSX.Element => {
   };
 
   const AccessControlThread = (forumThreadID: number): JSX.Element | null => {
+
     if (user == null) return null;
+    console.log(user,"level1")
     if (user.id == forumThreadID) {
       return (
         <div>
@@ -151,6 +153,7 @@ const ForumThread = (): JSX.Element => {
   };
 
   const generateForumThreadCommentsHTML = (forumThreadComments: ForumThreadComment[]): JSX.Element[] => {
+    console.log("forumThreadComments268", forumThreadComments[0].id);  
     const allForumThreadComments = forumThreadComments.map(
       (forumThreadComments, index) => (
         <div key={index} className="">
@@ -169,7 +172,7 @@ const ForumThread = (): JSX.Element => {
               className="card-body  text-right  btn-toolbar "
               style={{ width: "18rem" }}
             >
-              {AccessControlComments(forumThreadComments.user_id,forumThreadComments.id)}
+              {AccessControlComments(forumThreadComments.id)}
             </div>
           </div>
         </div>
@@ -187,6 +190,9 @@ const ForumThread = (): JSX.Element => {
   );
 
   const ForumThreadCommentsDeterminer = (forumThreadComments: ForumThreadComment[]): JSX.Element => {
+    console.log(user, "user level 11")
+    console.log(forumThreadComments, "forumThreadComments123")
+    
     if (forumThreadComments.length > 0) {
       return generateForumThreadCommentsHTML(forumThreadComments);
     } else {

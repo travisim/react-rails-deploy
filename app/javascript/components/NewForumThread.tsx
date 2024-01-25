@@ -9,18 +9,18 @@ const NewForumThread = () => {
   const [body, setBody] = useState("");
   const { user, setUser } = useContext(UserContext);
 
-  const stripHtmlEntities = (str) => {
+  const stripHtmlEntities = (str:string) => {
     return String(str)
       .replace(/\n/g, "<br> <br>")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   };
 
-  const onChange = (event, setFunction) => {
+  const onChange = (event: React.FormEvent<HTMLFormElement>, setFunction) => {
     setFunction(event.target.value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const url = "/api/v1/forum_thread/create";
     if ((title.length == 0 || body.length == 0, category.length == 0)) return;

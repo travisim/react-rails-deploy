@@ -2,11 +2,17 @@ import React, { useEffect, useState, useContext, createContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "./App";
 
+
+interface User {
+  id: number;
+  username: string;
+  created_at: string;
+  updated_at: string;
+}
 const SignIn = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState<string>("");
   const { user, setUser } = useContext(UserContext);
-  const [isUserCreated, setIsUserCreated] = useState<string>("");
   
   const onChange = (event: React.ChangeEvent<HTMLInputElement>, setFunction: React.Dispatch<React.SetStateAction<string>>) => {
     setFunction(event.target.value);
@@ -14,14 +20,11 @@ const SignIn = () => {
   
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const url = "/api/v1/users/create";
     if (username.length === 0) return;
     const signInContent = {
       username,
     };
-    if (user === null) {
-      // do something
-    }
+   
     fetch("/login", {
       method: "POST",
       headers: {
