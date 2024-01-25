@@ -79,6 +79,4 @@ test:
 #
 production:
   <<: *default
-  database: rails_react_forum_production
-  username: rails_react_forum
-  password: <%= ENV["RAILS_REACT_FORUM_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
